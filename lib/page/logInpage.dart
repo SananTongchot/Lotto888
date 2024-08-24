@@ -11,9 +11,10 @@ class _LoginpageState extends State<Loginpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("LogIn page"),
+      ),
       body: Column(),
-      
     );
   }
 }
