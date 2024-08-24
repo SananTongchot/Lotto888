@@ -14,7 +14,9 @@ class _LoginpageState extends State<Loginpage> {
       appBar: AppBar(
         title: const Text("LogIn page"),
       ),
-      body: Column(),
+      body: Column(
+        children: [Text("login")],
+      ),
     );
   }
 }
