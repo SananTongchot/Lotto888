@@ -17,20 +17,22 @@ class _WalletState extends State<Wallet> {
         foregroundColor: Color.fromARGB(255, 255, 255, 255),
         leading: const Icon(Icons.menu),
         actions: [
-          // IconButton(
-          //   icon: ImageIcon(AssetImage()),
-          //   onPressed: () {
-          //     // Action when more icon is pressed
-          //   },
-          // ),
+          IconButton(
+            icon: const Icon(Icons.person_outlined),
+            onPressed: () {
+              // Action when more icon is pressed
+            },
+          ),
         ],
       ),
       body: const Column(
         children: [
           SizedBox(
+            height: 300,
             child: Card(
               color: Color.fromARGB(255, 36, 70, 239),
               elevation: 10,
+              
             ),
           )
         ],
