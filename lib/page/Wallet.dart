@@ -12,9 +12,29 @@ class _WalletState extends State<Wallet> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Column(),
+        title: const Center(child: Text('Wallet')),
+        backgroundColor: Color.fromARGB(255, 36, 70, 239),
+        foregroundColor: Color.fromARGB(255, 255, 255, 255),
+        leading: const Icon(Icons.menu),
+        actions: [
+          // IconButton(
+          //   icon: ImageIcon(AssetImage()),
+          //   onPressed: () {
+          //     // Action when more icon is pressed
+          //   },
+          // ),
+        ],
       ),
-      body: Column(),
+      body: const Column(
+        children: [
+          SizedBox(
+            child: Card(
+              color: Color.fromARGB(255, 36, 70, 239),
+              elevation: 10,
+            ),
+          )
+        ],
+      ),
     );
   }
 }
