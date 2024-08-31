@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/page/CheckPrize.dart';
 import 'package:flutter_application_1/page/logInpage.dart';
 
 void main() {
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Lotto888',
-      home: Loginpage(),
+      home: Checkprizepage(),
     );
   }
 }
