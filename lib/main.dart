@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 //import 'package:flutter_application_1/page/CheckPrize.dart';
 import 'package:flutter_application_1/page/logInpage.dart';
-
 void main() {
   runApp(const MyApp());
 }

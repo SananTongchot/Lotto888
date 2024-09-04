@@ -149,14 +149,14 @@ class _RegisterpageState extends State<Registerpage> {
                                 Navigator.pop(context);
                               },
                               style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
+                                backgroundColor: WidgetStateProperty.all<Color>(
                                   const Color(0xFF768CFE),
                                 ),
-                                foregroundColor: MaterialStateProperty.all<Color>(
+                                foregroundColor: WidgetStateProperty.all<Color>(
                                   Colors.white,
                                 ),
-                                elevation: MaterialStateProperty.all<double>(5.0),
-                                shape: MaterialStateProperty.all<OutlinedBorder>(
+                                elevation: WidgetStateProperty.all<double>(5.0),
+                                shape: WidgetStateProperty.all<OutlinedBorder>(
                                   RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0),
                                   ),
@@ -169,14 +169,14 @@ class _RegisterpageState extends State<Registerpage> {
                                 // Handle sign-in action
                               },
                               style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
+                                backgroundColor: WidgetStateProperty.all<Color>(
                                   const Color(0xFF768CFE),
                                 ),
-                                foregroundColor: MaterialStateProperty.all<Color>(
+                                foregroundColor: WidgetStateProperty.all<Color>(
                                   Colors.white,
                                 ),
-                                elevation: MaterialStateProperty.all<double>(5.0),
-                                shape: MaterialStateProperty.all<OutlinedBorder>(
+                                elevation: WidgetStateProperty.all<double>(5.0),
+                                shape: WidgetStateProperty.all<OutlinedBorder>(
                                   RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0),
                                   ),

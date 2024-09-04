@@ -1,21 +1,6 @@
 import 'package:flutter/material.dart';
 import 'RegisterPage.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Lotto888',
-      home: Loginpage(),
-    );
-  }
-}
 
 class Loginpage extends StatefulWidget {
   const Loginpage({super.key});
@@ -23,6 +8,7 @@ class Loginpage extends StatefulWidget {
   @override
   State<Loginpage> createState() => _LoginpageState();
 }
+
 
 class _LoginpageState extends State<Loginpage> {
   final TextEditingController _usernameController = TextEditingController();
@@ -35,7 +21,7 @@ class _LoginpageState extends State<Loginpage> {
 
     return Scaffold(
       appBar: AppBar(
-        //title: const Text("Login Page"),
+        title: const Text("Login Page"),
       ),
       backgroundColor: const Color(0xFF7EDDE5),
       body: Center(
@@ -109,14 +95,14 @@ class _LoginpageState extends State<Loginpage> {
                                 );
                               },
                               style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
+                                backgroundColor: WidgetStateProperty.all<Color>(
                                   const Color(0xFF768CFE),
                                 ),
-                                foregroundColor: MaterialStateProperty.all<Color>(
+                                foregroundColor: WidgetStateProperty.all<Color>(
                                   Colors.white,
                                 ),
-                                elevation: MaterialStateProperty.all<double>(5.0),
-                                shape: MaterialStateProperty.all<OutlinedBorder>(
+                                elevation: WidgetStateProperty.all<double>(5.0),
+                                shape: WidgetStateProperty.all<OutlinedBorder>(
                                   RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0),
                                   ),
@@ -129,14 +115,14 @@ class _LoginpageState extends State<Loginpage> {
                                 // Handle login action
                               },
                               style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
+                                backgroundColor: WidgetStateProperty.all<Color>(
                                   const Color(0xFF768CFE),
                                 ),
-                                foregroundColor: MaterialStateProperty.all<Color>(
+                                foregroundColor: WidgetStateProperty.all<Color>(
                                   Colors.white,
                                 ),
-                                elevation: MaterialStateProperty.all<double>(5.0),
-                                shape: MaterialStateProperty.all<OutlinedBorder>(
+                                elevation: WidgetStateProperty.all<double>(5.0),
+                                shape: WidgetStateProperty.all<OutlinedBorder>(
                                   RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0),
                                   ),
