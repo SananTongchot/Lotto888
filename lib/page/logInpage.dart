@@ -4,6 +4,7 @@ import 'RegisterPage.dart';
 
 class Loginpage extends StatefulWidget {
   const Loginpage({super.key});
+  
 
   @override
   State<Loginpage> createState() => _LoginpageState();
@@ -19,6 +20,9 @@ class _LoginpageState extends State<Loginpage> {
     final mediaQuery = MediaQuery.of(context);
     final isLandscape = mediaQuery.orientation == Orientation.landscape;
 
+void initState(){
+
+}
     return Scaffold(
       appBar: AppBar(
         title: const Text("Login Page"),
@@ -153,6 +157,7 @@ class _LoginpageState extends State<Loginpage> {
     );
   }
   void login(){
-    
+
+
   }
 }
