@@ -20,6 +20,15 @@ class _LoginpageState extends State<Loginpage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String textResLogin = "";
+  String url = '';
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Configuration.getConfig().then((config) {
+      url = config['apiEndpoint'];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -172,34 +181,34 @@ class _LoginpageState extends State<Loginpage> {
   }
 
   Future<void> login() async {
-    log(_usernameController.text + _passwordController.text);
     var config = await Configuration.getConfig();
     var url = config['apiEndpoint'];
-    if (_usernameController == _usernameController.text.isEmpty) {
-      if (_passwordController == _passwordController.text.isEmpty) {
-        var model = {
-          "email": _usernameController.text,
-          "password": _passwordController.text
-        };
-        http
-            .post(Uri.parse("$url/login"),
-                headers: {"Content-Type": "application/json; charset=utf-8"},
-                body: jsonEncode(model))
-            .then((value) {
-          var user = userPostLoginResponseFromJson(value.body);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => FindLottoPage(idx: user.uid)));
-        }).catchError((err) {
-          setState(() {
-            textResLogin = "Email or password incorrect";
-          });
-        });
-      }
-    } else {
+
+    if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
       setState(() {
         textResLogin = "Email or password incorrect";
+      });
+    } else {
+      log(_usernameController.text + _passwordController.text);
+      var model = {
+        "email": _usernameController.text,
+        "password": _passwordController.text
+      };
+      log(model.toString());
+      http
+          .post(Uri.parse("$url/login"),
+              headers: {"Content-Type": "application/json; charset=utf-8"},
+              body: jsonEncode(model))
+          .then((value) {
+        var user = userPostLoginResponseFromJson(value.body);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => FindLottoPage(idx: user.uid)));
+      }).catchError((err) {
+        setState(() {
+          textResLogin = "Email or password incorrect2";
+        });
       });
     }
   }
