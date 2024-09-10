@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-class FindlottoPage extends StatefulWidget {
-  const FindlottoPage({super.key});
+class FineLottoPage extends StatefulWidget {
+  const FineLottoPage({super.key});
 
   @override
-  State<FindlottoPage> createState() => _FindlottoPageState();
+  State<FineLottoPage> createState() => _FineLottoPageState();
 }
 
-class _FindlottoPageState extends State<FindlottoPage> {
+class _FineLottoPageState extends State<FineLottoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("findLotto"),
+      appBar: AppBar(),
+      body: Column(
+        
       ),
-      body: Column(),
     );
   }
 }
