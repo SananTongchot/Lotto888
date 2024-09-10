@@ -73,14 +73,20 @@ class _LoginpageState extends State<Loginpage> {
                         const SizedBox(height: 5.0),
                         TextField(
                           controller: _usernameController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
+<<<<<<< Updated upstream
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 0.5, horizontal: 16.0),
                             border: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20.0)),
+=======
+                            contentPadding: EdgeInsets.symmetric(vertical: 0.5, horizontal: 16.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+>>>>>>> Stashed changes
                               borderSide: BorderSide.none,
                             ),
                           ),
@@ -93,14 +99,20 @@ class _LoginpageState extends State<Loginpage> {
                         const SizedBox(height: 5.0),
                         TextField(
                           controller: _passwordController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
+<<<<<<< Updated upstream
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 0.5, horizontal: 16.0),
                             border: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20.0)),
+=======
+                            contentPadding: EdgeInsets.symmetric(vertical: 0.5, horizontal: 16.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+>>>>>>> Stashed changes
                               borderSide: BorderSide.none,
                             ),
                           ),
