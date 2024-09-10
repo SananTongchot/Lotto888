@@ -1,17 +1,19 @@
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-class FineLottoPage extends StatefulWidget {
-  const FineLottoPage({super.key});
+class FindLottoPage extends StatefulWidget {
+  int idx = 0;
+  FindLottoPage({super.key, required this.idx});
 
   @override
-  State<FineLottoPage> createState() => _FineLottoPageState();
+  State<FindLottoPage> createState() => _FineLottoPageState();
 }
 
-class _FineLottoPageState extends State<FineLottoPage> {
+class _FineLottoPageState extends State<FindLottoPage> {
   TextEditingController num1Clt = TextEditingController();
   TextEditingController num2Clt = TextEditingController();
   TextEditingController num3Clt = TextEditingController();
