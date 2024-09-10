@@ -74,22 +74,37 @@ class _FineLottoPageState extends State<FineLottoPage> {
           width: double.infinity,
           height: 200,
           child: ClipRRect(
-            borderRadius:  const BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(30), // การโค้งมนที่มุมล่างซ้าย
               bottomRight: Radius.circular(30), // การโค้งมนที่มุมล่างขวา
             ),
             child: Container(
-              color:  const Color.fromARGB(
+              color: const Color.fromARGB(
                   255, 235, 229, 229), // สีของ Container ในครึ่งบน
-              child:  Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      SizedBox(
+                      Container(
                         width: 40,
                         height: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.white, // กำหนดสีพื้นหลัง
+                          borderRadius:
+                              BorderRadius.circular(10), // ความโค้งมนของขอบ
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey
+                                  .withOpacity(0.5), // สีของเงาและความโปร่งใส
+                              spreadRadius: 2, // กระจายเงา
+                              blurRadius: 5, // ความเบลอของเงา
+                              offset: Offset(
+                                  0, 3), // ตำแหน่งของเงา (แนวนอน, แนวตั้ง)
+                            ),
+                          ],
+                        ),
                         child: TextField(
                           controller: num1Clt,
                           keyboardType: TextInputType.number,
@@ -101,6 +116,7 @@ class _FineLottoPageState extends State<FineLottoPage> {
                           decoration: const InputDecoration(
                             filled: true, // เปิดใช้งานสีพื้นหลัง
                             fillColor: Colors.white,
+
                             border: OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10)),
