@@ -22,10 +22,6 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Lotto888',
       home: Checkprizepage(),
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
     );
   }
 }
