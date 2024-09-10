@@ -6,7 +6,11 @@ import 'package:flutter_application_1/page/AdminPage/ProfileAdmin.dart';
 // import 'package:flutter_application_1/page/ProfileUser.dart';
 import 'package:flutter_application_1/page/CheckPrize.dart';
 import 'package:flutter_application_1/page/FindLotto.dart';
+<<<<<<< Updated upstream
 import 'package:flutter_application_1/page/logInpage.dart';
+=======
+import 'package:flutter_application_1/page/ProfileUser.dart';
+>>>>>>> Stashed changes
 
 //import 'package:flutter_application_1/page/CheckPrize.dart';
 // import 'package:flutter_application_1/page/logInpage.dart';
@@ -22,7 +26,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Lotto888',
+<<<<<<< Updated upstream
       home: Loginpage(),
+=======
+      // home: Checkprizepage(),
+      home: Profileuser(),
+>>>>>>> Stashed changes
     );
   }
 }
