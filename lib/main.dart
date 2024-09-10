@@ -8,7 +8,7 @@ import 'package:flutter_application_1/page/CheckPrize.dart';
 import 'package:flutter_application_1/page/FindLotto.dart';
 
 //import 'package:flutter_application_1/page/CheckPrize.dart';
-// import 'package:flutter_application_1/page/logInpage.dart';
+import 'package:flutter_application_1/page/logInpage.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -21,7 +21,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Lotto888',
-      home: Checkprizepage(),
+      // home: Checkprizepage(),
+      home: Loginpage(),
     );
   }
 }
