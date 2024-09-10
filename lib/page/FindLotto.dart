@@ -79,7 +79,7 @@ class _FineLottoPageState extends State<FineLottoPage> {
       body: Column(children: [
         SizedBox(
           width: double.infinity,
-          height: 150,
+          height: 140,
           child: ClipRRect(
             borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(30), // การโค้งมนที่มุมล่างซ้าย
@@ -476,6 +476,9 @@ class _FineLottoPageState extends State<FineLottoPage> {
           ),
         ),
         SizedBox(
+          height: 10,
+        ),
+        SizedBox(
           width: 360,
           height: 103,
           child: Card(
@@ -554,16 +557,17 @@ class _FineLottoPageState extends State<FineLottoPage> {
                       ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 5,
-                            horizontal: 15,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          // primary: Colors.white, // สีพื้นหลังของปุ่ม
-                          // onPrimary: Colors.grey, // สีของข้อความปุ่ม
-                        ),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 5,
+                              horizontal: 15,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            backgroundColor: Colors.white
+                            // primary: Colors.white, // สีพื้นหลังของปุ่ม
+                            // onPrimary: Colors.grey, // สีของข้อความปุ่ม
+                            ),
                         child: const Text(
                           'เลือก',
                           style: TextStyle(
