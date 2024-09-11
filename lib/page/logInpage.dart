@@ -215,14 +215,18 @@ class _LoginpageState extends State<Loginpage> {
               body: jsonEncode(model))
           .then((value) {
         log(value.body);
-        var user = userPostLoginResponseFromJson(value.body);
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => FindLottoPage(idx: user.uid)));
+        // var user = userPostLoginResponseFromJson(value.body);
+        var responseData = jsonDecode(value.body);
+
+        // ดึงข้อความและ uid จาก response
+        // String message = responseData['message'];
+        int uid = responseData['uid'];
+
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => FindLottoPage(idx: uid)));
       }).catchError((err) {
         setState(() {
-          textResLogin = "Email or password incorrect";
+          textResLogin = err.toString();
         });
       });
     }
