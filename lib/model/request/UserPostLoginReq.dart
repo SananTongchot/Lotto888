@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-UserLoginPostRequest userLoginPostRequestFromJson(String str) => UserLoginPostRequest.fromJson(json.decode(str));
+UserLoginPostRequestuserLoginPostRequestFromJson(String str) => UserLoginPostRequest.fromJson(json.decode(str));
 
 String userLoginPostRequestToJson(UserLoginPostRequest data) => json.encode(data.toJson());
 

@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/request/UserPostLoginReq.dart';
 import 'package:flutter_application_1/page/Wallet.dart';
-import 'package:flutter_application_1/page/Wallet.dart';
 import 'package:flutter_application_1/page/RegisterPage.dart'; // Update if necessary
 import 'package:flutter_application_1/config/config.dart';
 import 'package:http/http.dart' as http;
@@ -122,14 +121,14 @@ class _LoginPageState extends State<LoginPage> {
                                 );
                               },
                               style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all<Color>(
+                                backgroundColor: MaterialStateProperty.all<Color>(
                                   const Color(0xFF768CFE),
                                 ),
-                                foregroundColor: WidgetStateProperty.all<Color>(
+                                foregroundColor: MaterialStateProperty.all<Color>(
                                   Colors.white,
                                 ),
-                                elevation: WidgetStateProperty.all<double>(5.0),
-                                shape: WidgetStateProperty.all<OutlinedBorder>(
+                                elevation: MaterialStateProperty.all<double>(5.0),
+                                shape: MaterialStateProperty.all<OutlinedBorder>(
                                   RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0),
                                   ),
@@ -142,14 +141,14 @@ class _LoginPageState extends State<LoginPage> {
                                 login();
                               },
                               style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all<Color>(
+                                backgroundColor: MaterialStateProperty.all<Color>(
                                   const Color(0xFF768CFE),
                                 ),
-                                foregroundColor: WidgetStateProperty.all<Color>(
+                                foregroundColor: MaterialStateProperty.all<Color>(
                                   Colors.white,
                                 ),
-                                elevation: WidgetStateProperty.all<double>(5.0),
-                                shape: WidgetStateProperty.all<OutlinedBorder>(
+                                elevation: MaterialStateProperty.all<double>(5.0),
+                                shape: MaterialStateProperty.all<OutlinedBorder>(
                                   RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0),
                                   ),
@@ -180,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<void> login() async {
+  void login() {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       setState(() {
         textResLogin = "Email or password cannot be empty";
@@ -193,21 +192,24 @@ class _LoginPageState extends State<LoginPage> {
       password: _passwordController.text,
     );
 
-    try {
-      var response = await http.post(
-        Uri.parse("$url/login"),
-        headers: {"Content-Type": "application/json; charset=utf-8"},
-        body: userLoginPostRequestToJson(requestModel), // Encode the request model to JSON
-      );
+    http
+        .post(
+      Uri.parse("$url/login"),
+      headers: {"Content-Type": "application/json; charset=utf-8"},
+      body: userLoginPostRequestToJson(requestModel),
+    )
+        .then((response) {
+      log('Response Status: ${response.statusCode}');
+      log('Response Body: ${response.body}');
 
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
-        var userId = data['userId']; // Assume the response includes userId
+        var userId = data['userId']; // Ensure backend returns 'userId'
 
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Wallet(userId: userId), // Update if necessary
+            builder: (context) => Wallet(userId: userId), // Pass the userId
           ),
         );
       } else {
@@ -215,11 +217,13 @@ class _LoginPageState extends State<LoginPage> {
           textResLogin = "Invalid email or password";
         });
       }
-    } catch (error) {
+    }).catchError((error) {
       setState(() {
         textResLogin = "An error occurred. Please try again.";
       });
-      log(error.toString());
-    }
+      log('Login Error: ${error.toString()}');
+    });
+
+    log("Login function executed");
   }
 }

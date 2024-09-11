@@ -54,11 +54,11 @@ class _RegisterpageState extends State<Registerpage> {
                         const SizedBox(height: 5.0),
                         TextField(
                           controller: _usernameController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                            border: const OutlineInputBorder(
+                            contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                            border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(20.0)),
                               borderSide: BorderSide.none,
                             ),
@@ -72,11 +72,11 @@ class _RegisterpageState extends State<Registerpage> {
                         const SizedBox(height: 3.0),
                         TextField(
                           controller: _phoneController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                            border: const OutlineInputBorder(
+                            contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                            border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(20.0)),
                               borderSide: BorderSide.none,
                             ),
@@ -91,11 +91,11 @@ class _RegisterpageState extends State<Registerpage> {
                         const SizedBox(height: 3.0),
                         TextField(
                           controller: _emailController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                            border: const OutlineInputBorder(
+                            contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                            border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(20.0)),
                               borderSide: BorderSide.none,
                             ),
@@ -110,11 +110,11 @@ class _RegisterpageState extends State<Registerpage> {
                         const SizedBox(height: 3.0),
                         TextField(
                           controller: _passwordController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                            border: const OutlineInputBorder(
+                            contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                            border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(20.0)),
                               borderSide: BorderSide.none,
                             ),
@@ -129,11 +129,11 @@ class _RegisterpageState extends State<Registerpage> {
                         const SizedBox(height: 3.0),
                         TextField(
                           controller: _confirmPasswordController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                            border: const OutlineInputBorder(
+                            contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                            border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(20.0)),
                               borderSide: BorderSide.none,
                             ),

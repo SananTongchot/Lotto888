@@ -51,15 +51,15 @@ class _WalletState extends State<Wallet> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
               onTap: () {
                 // การทำงานเมื่อเลือกเมนู
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
               onTap: () {
                 // การทำงานเมื่อเลือกเมนู
               },
@@ -99,7 +99,7 @@ class _WalletState extends State<Wallet> {
                                 ),
                               ),
                               Text(
-                                '฿' + '123456', // แสดงตัวเลข 6 หลัก
+                                '฿' '123456', // แสดงตัวเลข 6 หลัก
                                 style: TextStyle(
                                   fontSize: 30,
                                   color: Colors.white,
@@ -385,13 +385,6 @@ class _WalletState extends State<Wallet> {
                 ),
                 FilledButton(
                   onPressed: () {} ,
-                  child: const Text(
-                    'ชำระเงิน',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(
                         255, 118, 140, 254), // เปลี่ยนสีพื้นหลังของปุ่ม
@@ -399,6 +392,13 @@ class _WalletState extends State<Wallet> {
                         horizontal: 16, vertical: 8), // เพิ่ม padding
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8), // เพิ่มมุมมน
+                    ),
+                  ),
+                  child: const Text(
+                    'ชำระเงิน',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
                     ),
                   ),
                 ),

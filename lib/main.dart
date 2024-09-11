@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/page/AdminPage/ChckPrizeAdmin.dart';
 // import 'package:flutter_application_1/page/AdminPage/EditProfileAdmin.dart';
-import 'package:flutter_application_1/page/AdminPage/ProfileAdmin.dart';
 // import 'package:flutter_application_1/page/EditProfileUser.dart';
 // import 'package:flutter_application_1/page/ProfileUser.dart';
-import 'package:flutter_application_1/page/CheckPrize.dart';
-import 'package:flutter_application_1/page/FindLotto.dart';
 import 'package:flutter_application_1/page/logInpage.dart';
-import 'package:flutter_application_1/page/ProfileUser.dart';
 //import 'package:flutter_application_1/page/CheckPrize.dart';
 // import 'package:flutter_application_1/page/logInpage.dart';
 void main() {

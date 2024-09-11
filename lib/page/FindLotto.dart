@@ -62,15 +62,15 @@ class _FineLottoPageState extends State<FindLottoPage> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
               onTap: () {
                 // การทำงานเมื่อเลือกเมนู
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
               onTap: () {
                 // การทำงานเมื่อเลือกเมนู
               },
@@ -111,7 +111,7 @@ class _FineLottoPageState extends State<FindLottoPage> {
                                     .withOpacity(0.5), // สีของเงาและความโปร่งใส
                                 spreadRadius: 2, // กระจายเงา
                                 blurRadius: 5, // ความเบลอของเงา
-                                offset: Offset(
+                                offset: const Offset(
                                     0, 3), // ตำแหน่งของเงา (แนวนอน, แนวตั้ง)
                               ),
                             ],
@@ -170,7 +170,7 @@ class _FineLottoPageState extends State<FindLottoPage> {
                                     .withOpacity(0.5), // สีของเงาและความโปร่งใส
                                 spreadRadius: 2, // กระจายเงา
                                 blurRadius: 5, // ความเบลอของเงา
-                                offset: Offset(
+                                offset: const Offset(
                                     0, 3), // ตำแหน่งของเงา (แนวนอน, แนวตั้ง)
                               ),
                             ],
@@ -229,7 +229,7 @@ class _FineLottoPageState extends State<FindLottoPage> {
                                     .withOpacity(0.5), // สีของเงาและความโปร่งใส
                                 spreadRadius: 2, // กระจายเงา
                                 blurRadius: 5, // ความเบลอของเงา
-                                offset: Offset(
+                                offset: const Offset(
                                     0, 3), // ตำแหน่งของเงา (แนวนอน, แนวตั้ง)
                               ),
                             ],
@@ -288,7 +288,7 @@ class _FineLottoPageState extends State<FindLottoPage> {
                                     .withOpacity(0.5), // สีของเงาและความโปร่งใส
                                 spreadRadius: 2, // กระจายเงา
                                 blurRadius: 5, // ความเบลอของเงา
-                                offset: Offset(
+                                offset: const Offset(
                                     0, 3), // ตำแหน่งของเงา (แนวนอน, แนวตั้ง)
                               ),
                             ],
@@ -347,7 +347,7 @@ class _FineLottoPageState extends State<FindLottoPage> {
                                     .withOpacity(0.5), // สีของเงาและความโปร่งใส
                                 spreadRadius: 2, // กระจายเงา
                                 blurRadius: 5, // ความเบลอของเงา
-                                offset: Offset(
+                                offset: const Offset(
                                     0, 3), // ตำแหน่งของเงา (แนวนอน, แนวตั้ง)
                               ),
                             ],
@@ -406,7 +406,7 @@ class _FineLottoPageState extends State<FindLottoPage> {
                                     .withOpacity(0.5), // สีของเงาและความโปร่งใส
                                 spreadRadius: 2, // กระจายเงา
                                 blurRadius: 5, // ความเบลอของเงา
-                                offset: Offset(
+                                offset: const Offset(
                                     0, 3), // ตำแหน่งของเงา (แนวนอน, แนวตั้ง)
                               ),
                             ],
@@ -455,7 +455,7 @@ class _FineLottoPageState extends State<FindLottoPage> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   SizedBox(
@@ -470,14 +470,14 @@ class _FineLottoPageState extends State<FindLottoPage> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 8), // เพิ่ม padding
                         ),
-                        child: Text('ค้นหาล๊อตเตอรี่')),
+                        child: const Text('ค้นหาล๊อตเตอรี่')),
                   ),
                 ],
               ),
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         SizedBox(

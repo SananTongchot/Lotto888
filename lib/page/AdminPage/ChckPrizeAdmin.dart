@@ -51,15 +51,15 @@ class _CheckPrizeAdminState extends State<CheckPrizeAdmin> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
               onTap: () {
                 // การทำงานเมื่อเลือกเมนู
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
               onTap: () {
                 // การทำงานเมื่อเลือกเมนู
               },
@@ -155,7 +155,7 @@ child: Container(
     child: ElevatedButton(
       onPressed: () {}, // ใส่ฟังก์ชันที่คุณต้องการเมื่อกดปุ่ม
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xFF2445EF), // สีของปุ่ม
+        backgroundColor: const Color(0xFF2445EF), // สีของปุ่ม
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20), // ขยายขนาดของปุ่ม
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15), // มุมปุ่มมน
