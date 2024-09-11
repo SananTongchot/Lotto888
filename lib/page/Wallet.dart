@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Wallet extends StatefulWidget {
-  final String userId; // เพิ่มตัวแปรสำหรับรับ userId
+  // final String userId; // เพิ่มตัวแปรสำหรับรับ userId
 
-  const Wallet({super.key, required this.userId});
+  // const Wallet({super.key, required this.userId});
 
   @override
   State<Wallet> createState() => _WalletState();
@@ -99,7 +99,8 @@ class _WalletState extends State<Wallet> {
                                 ),
                               ),
                               Text(
-                                '฿' '123456', // แสดงตัวเลข 6 หลัก
+                                '฿'
+                                '123456', // แสดงตัวเลข 6 หลัก
                                 style: TextStyle(
                                   fontSize: 30,
                                   color: Colors.white,
@@ -112,7 +113,8 @@ class _WalletState extends State<Wallet> {
                           Image.asset('assets/images/Icon.png'),
                         ],
                       ),
-                      const SizedBox(height: 8), // ระยะห่างระหว่างข้อความและ GridView
+                      const SizedBox(
+                          height: 8), // ระยะห่างระหว่างข้อความและ GridView
                     ],
                   ),
                 ),
@@ -196,7 +198,7 @@ class _WalletState extends State<Wallet> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         ElevatedButton(
-                          onPressed: () {} ,
+                          onPressed: () {},
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(
                               vertical: 5,
@@ -306,7 +308,7 @@ class _WalletState extends State<Wallet> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         ElevatedButton(
-                          onPressed: () {} ,
+                          onPressed: () {},
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(
                               vertical: 5,
@@ -384,7 +386,7 @@ class _WalletState extends State<Wallet> {
                   ],
                 ),
                 FilledButton(
-                  onPressed: () {} ,
+                  onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(
                         255, 118, 140, 254), // เปลี่ยนสีพื้นหลังของปุ่ม
