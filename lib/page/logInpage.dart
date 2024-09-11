@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/respons/UserPostLoginRes.dart';
@@ -219,11 +220,25 @@ class _LoginpageState extends State<Loginpage> {
         var responseData = jsonDecode(value.body);
 
         // ดึงข้อความและ uid จาก response
-        // String message = responseData['message'];
+        String message = responseData['message'];
         int uid = responseData['uid'];
+        String type = responseData['type'];
 
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => FindLottoPage(idx: uid)));
+        if (message == "Login successful") {
+          if(type == "2"){
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => FindLottoPage(idx: uid)));
+
+          }else if(type == "1"){
+              Navigator.push(context,
+              MaterialPageRoute(builder: (context) => Random(idx: uid)));
+
+          }
+        } else {
+          setState(() {
+            textResLogin = "Email or password incorect";
+          });
+        }
       }).catchError((err) {
         setState(() {
           textResLogin = err.toString();
