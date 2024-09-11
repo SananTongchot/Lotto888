@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Wallet extends StatefulWidget {
-  const Wallet({super.key});
+  // final String userId; // เพิ่มตัวแปรสำหรับรับ userId
+
+  // const Wallet({super.key, required this.userId});
 
   @override
   State<Wallet> createState() => _WalletState();
@@ -15,7 +17,7 @@ class _WalletState extends State<Wallet> {
         iconTheme: const IconThemeData(
           color: Colors.white, // กำหนดให้ไอคอนเป็นสีขาว
         ),
-        title: const Text("Check"),
+        title: const Text("Wallet"),
         centerTitle: true,
         backgroundColor: const Color(0xFF2445EF),
         titleTextStyle: const TextStyle(
@@ -49,15 +51,15 @@ class _WalletState extends State<Wallet> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
               onTap: () {
                 // การทำงานเมื่อเลือกเมนู
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
               onTap: () {
                 // การทำงานเมื่อเลือกเมนู
               },
@@ -97,7 +99,8 @@ class _WalletState extends State<Wallet> {
                                 ),
                               ),
                               Text(
-                                '฿' + '123456', // แสดงตัวเลข 6 หลัก
+                                '฿'
+                                '123456', // แสดงตัวเลข 6 หลัก
                                 style: TextStyle(
                                   fontSize: 30,
                                   color: Colors.white,
@@ -112,20 +115,6 @@ class _WalletState extends State<Wallet> {
                       ),
                       const SizedBox(
                           height: 8), // ระยะห่างระหว่างข้อความและ GridView
-                      // Expanded(
-                      //   child: GridView.builder(
-                      //     gridDelegate:
-                      //         const SliverGridDelegateWithFixedCrossAxisCount(
-                      //       crossAxisCount: 2, // 2 คอลัมน์
-                      //       crossAxisSpacing: 3.0, // ระยะห่างระหว่างคอลัมน์
-                      //       mainAxisSpacing: 16.0, // ระยะห่างระหว่างแถว
-                      //       childAspectRatio:
-                      //           2.0, // อัตราส่วนขนาดของ Card (กว้างยาว)
-                      //     ),
-                      //     itemCount: 4, // จำนวนการ์ด
-                      //     itemBuilder: (context, index) {},
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
@@ -218,8 +207,6 @@ class _WalletState extends State<Wallet> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            // primary: Colors.white, // สีพื้นหลังของปุ่ม
-                            // onPrimary: Colors.grey, // สีของข้อความปุ่ม
                           ),
                           child: const Text(
                             'เลือก',
@@ -330,8 +317,6 @@ class _WalletState extends State<Wallet> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            // primary: Colors.white, // สีพื้นหลังของปุ่ม
-                            // onPrimary: Colors.grey, // สีของข้อความปุ่ม
                           ),
                           child: const Text(
                             'เลือก',
@@ -370,15 +355,13 @@ class _WalletState extends State<Wallet> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        // color: Colors.black54,
                       ),
                     ),
-                    SizedBox(height: 4), // เพิ่มระยะห่างระหว่างข้อความ
+                    SizedBox(height: 4),
                     Text(
                       '2',
                       style: TextStyle(
                         fontSize: 20,
-                        // color: Colors.black,
                       ),
                     ),
                   ],
@@ -391,28 +374,19 @@ class _WalletState extends State<Wallet> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        // color: Colors.black54,
                       ),
                     ),
-                    SizedBox(height: 4), // เพิ่มระยะห่างระหว่างข้อความ
+                    SizedBox(height: 4),
                     Text(
                       '160',
                       style: TextStyle(
                         fontSize: 20,
-                        // color: Colors.black,
                       ),
                     ),
                   ],
                 ),
                 FilledButton(
                   onPressed: () {},
-                  child: const Text(
-                    'ชำระเงิน',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(
                         255, 118, 140, 254), // เปลี่ยนสีพื้นหลังของปุ่ม
@@ -420,6 +394,13 @@ class _WalletState extends State<Wallet> {
                         horizontal: 16, vertical: 8), // เพิ่ม padding
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8), // เพิ่มมุมมน
+                    ),
+                  ),
+                  child: const Text(
+                    'ชำระเงิน',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
                     ),
                   ),
                 ),

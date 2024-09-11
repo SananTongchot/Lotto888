@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/respons/UserPostLoginRes.dart';
 import 'package:flutter_application_1/page/FindLotto.dart';
 import 'package:flutter_application_1/page/Wallet.dart';
 import 'RegisterPage.dart';
@@ -123,7 +122,7 @@ class _LoginpageState extends State<Loginpage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const Wallet()),
+                                      builder: (context) => Wallet()),
                                 );
                               },
                               style: ButtonStyle(

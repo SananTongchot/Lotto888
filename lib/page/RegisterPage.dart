@@ -181,6 +181,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           obscureText: true,
                         ),
+                        Text(text),
                         const SizedBox(height: 15.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -196,7 +197,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                   borderRadius: BorderRadius.circular(20.0),
                                 ),
                               ),
-                              child: const Text('Back'),
+                              child: const Text(
+                                'Back',
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                             ElevatedButton(
                               onPressed: Register,
@@ -207,7 +211,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                   borderRadius: BorderRadius.circular(20.0),
                                 ),
                               ),
-                              child: const Text('Sign Up'),
+                              child: const Text(
+                                'Sign Up',
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                           ],
                         ),
@@ -251,7 +258,6 @@ class _RegisterPageState extends State<RegisterPage> {
         );
         log('Model: ${model.toString()}');
         log('JSON: ${userRegisterPostRequestToJson(model)}');
-
         try {
           var response = await http.post(
             Uri.parse("$url/register"),
@@ -259,8 +265,14 @@ class _RegisterPageState extends State<RegisterPage> {
             body: userRegisterPostRequestToJson(model),
           );
 
+          log(response.statusCode.toString());
           log('Response: ${response.body}');
-          if (response.statusCode == 200) {
+
+          // ตรวจสอบว่า statusCode เป็น 201 (สร้างสำเร็จ)
+          if (response.statusCode == 201) {
+            log('Registration successful.');
+
+            // นำทางไปยังหน้า Login เมื่อการลงทะเบียนสำเร็จ
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -268,21 +280,19 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             );
           } else {
+            // ถ้าสถานะไม่ใช่ 201 ให้แสดงข้อความข้อผิดพลาด
             setState(() {
               text = "Error: Registration failed. Please try again.";
             });
           }
         } catch (e) {
+          // จัดการข้อผิดพลาดจากการเชื่อมต่อ
           log('Error: ${e.toString()}');
           setState(() {
             text = "Error: Unable to connect to the server.";
           });
         }
       }
-    } else {
-      setState(() {
-        text = "Error: Passwords do not match.";
-      });
     }
   }
 }
