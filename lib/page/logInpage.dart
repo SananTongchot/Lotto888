@@ -72,25 +72,22 @@ class _LoginpageState extends State<Loginpage> {
                         ),
                         const SizedBox(height: 5.0),
                         TextField(
-                          controller: _usernameController,
+                          controller: _passwordController,
                           decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-<<<<<<< Updated upstream
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 0.5, horizontal: 16.0),
-                            border: const OutlineInputBorder(
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 0.5,
+                              horizontal: 16.0,
+                            ),
+                            border: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20.0)),
-=======
-                            contentPadding: EdgeInsets.symmetric(vertical: 0.5, horizontal: 16.0),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(20.0)),
->>>>>>> Stashed changes
                               borderSide: BorderSide.none,
                             ),
                           ),
                         ),
+
                         const SizedBox(height: 35.0),
                         const Text(
                           'Password',
@@ -102,22 +99,19 @@ class _LoginpageState extends State<Loginpage> {
                           decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-<<<<<<< Updated upstream
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 0.5, horizontal: 16.0),
-                            border: const OutlineInputBorder(
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 0.5,
+                              horizontal: 16.0,
+                            ),
+                            border: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20.0)),
-=======
-                            contentPadding: EdgeInsets.symmetric(vertical: 0.5, horizontal: 16.0),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(20.0)),
->>>>>>> Stashed changes
                               borderSide: BorderSide.none,
                             ),
                           ),
                           obscureText: true,
                         ),
+
                         Text(textResLogin),
                         const SizedBox(height: 20.0),
                         Row(
