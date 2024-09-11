@@ -1,18 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/page/Wallet.dart';
+import 'package:flutter_application_1/page/logInpage.dart';
+import 'dart:developer';
+import 'package:http/http.dart' as http;
+import 'package:flutter_application_1/config/config.dart';
+import 'package:flutter_application_1/model/request/UserPostRegisterReq.dart';
 
-class Registerpage extends StatefulWidget {
-  const Registerpage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<Registerpage> createState() => _RegisterpageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterpageState extends State<Registerpage> {
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  String text = "";
+  String url = '';
+
+  @override
+  void initState() {
+    super.initState();
+    // อ่านค่า config
+    Configuration.getConfig().then((value) {
+      log(value['apiEndpoint']);
+      setState(() {
+        url = value['apiEndpoint'] ?? '';
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +65,7 @@ class _RegisterpageState extends State<Registerpage> {
               alignment: Alignment.topCenter,
               children: [
                 Card(
-                  margin: const EdgeInsets.only(top: 100.0), // ปรับจาก 150.0 เป็น 100.0
+                  margin: const EdgeInsets.only(top: 100.0),
                   color: Colors.white.withOpacity(0.8),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0),
@@ -54,12 +85,14 @@ class _RegisterpageState extends State<Registerpage> {
                         const SizedBox(height: 5.0),
                         TextField(
                           controller: _usernameController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                            border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 16.0),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
                               borderSide: BorderSide.none,
                             ),
                           ),
@@ -72,12 +105,14 @@ class _RegisterpageState extends State<Registerpage> {
                         const SizedBox(height: 3.0),
                         TextField(
                           controller: _phoneController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                            border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 16.0),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
                               borderSide: BorderSide.none,
                             ),
                           ),
@@ -91,12 +126,14 @@ class _RegisterpageState extends State<Registerpage> {
                         const SizedBox(height: 3.0),
                         TextField(
                           controller: _emailController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                            border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 16.0),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
                               borderSide: BorderSide.none,
                             ),
                           ),
@@ -110,12 +147,14 @@ class _RegisterpageState extends State<Registerpage> {
                         const SizedBox(height: 3.0),
                         TextField(
                           controller: _passwordController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                            border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 16.0),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
                               borderSide: BorderSide.none,
                             ),
                           ),
@@ -129,12 +168,14 @@ class _RegisterpageState extends State<Registerpage> {
                         const SizedBox(height: 3.0),
                         TextField(
                           controller: _confirmPasswordController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                            border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 16.0),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
                               borderSide: BorderSide.none,
                             ),
                           ),
@@ -148,41 +189,25 @@ class _RegisterpageState extends State<Registerpage> {
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all<Color>(
-                                  const Color(0xFF768CFE),
-                                ),
-                                foregroundColor: WidgetStateProperty.all<Color>(
-                                  Colors.white,
-                                ),
-                                elevation: WidgetStateProperty.all<double>(5.0),
-                                shape: WidgetStateProperty.all<OutlinedBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF768CFE),
+                                elevation: 5.0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
                                 ),
                               ),
                               child: const Text('Back'),
                             ),
                             ElevatedButton(
-                              onPressed: () {
-                                // Handle sign-in action
-                              },
-                              style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all<Color>(
-                                  const Color(0xFF768CFE),
-                                ),
-                                foregroundColor: WidgetStateProperty.all<Color>(
-                                  Colors.white,
-                                ),
-                                elevation: WidgetStateProperty.all<double>(5.0),
-                                shape: WidgetStateProperty.all<OutlinedBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
+                              onPressed: Register,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF768CFE),
+                                elevation: 5.0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
                                 ),
                               ),
-                              child: const Text('Sign In'),
+                              child: const Text('Sign Up'),
                             ),
                           ],
                         ),
@@ -205,5 +230,59 @@ class _RegisterpageState extends State<Registerpage> {
         ),
       ),
     );
+  }
+
+  void Register() async {
+    if (_passwordController.text == _confirmPasswordController.text) {
+      if (_usernameController.text.isEmpty ||
+          _phoneController.text.isEmpty ||
+          _emailController.text.isEmpty ||
+          _passwordController.text.isEmpty ||
+          _confirmPasswordController.text.isEmpty) {
+        setState(() {
+          text = "Please enter complete information.";
+        });
+      } else {
+        var model = UserRegisterPostRequest(
+          username: _usernameController.text,
+          phone: _phoneController.text,
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+        log('Model: ${model.toString()}');
+        log('JSON: ${userRegisterPostRequestToJson(model)}');
+
+        try {
+          var response = await http.post(
+            Uri.parse("$url/register"),
+            headers: {"Content-Type": "application/json"},
+            body: userRegisterPostRequestToJson(model),
+          );
+
+          log('Response: ${response.body}');
+          if (response.statusCode == 200) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Loginpage(),
+              ),
+            );
+          } else {
+            setState(() {
+              text = "Error: Registration failed. Please try again.";
+            });
+          }
+        } catch (e) {
+          log('Error: ${e.toString()}');
+          setState(() {
+            text = "Error: Unable to connect to the server.";
+          });
+        }
+      }
+    } else {
+      setState(() {
+        text = "Error: Passwords do not match.";
+      });
+    }
   }
 }
