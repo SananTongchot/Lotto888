@@ -65,6 +65,7 @@ class _FineLottoPageState extends State<FindLottoPage> {
               leading: const Icon(Icons.home),
               title: const Text('Home'),
               onTap: () {
+                Navigator.pop(context);
                 // การทำงานเมื่อเลือกเมนู
               },
             ),
@@ -462,7 +463,8 @@ class _FineLottoPageState extends State<FindLottoPage> {
                     width: 200,
                     child: FilledButton(
                         onPressed: () {
-                          getnum();
+                          Navigator.pop(context);
+                          // getnum();
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color.fromARGB(

@@ -82,10 +82,18 @@ class _LoginPageState extends State<LoginPage> {
                             contentPadding: EdgeInsets.symmetric(vertical: 0.5, horizontal: 16.0),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 0.5,
+                              horizontal: 16.0,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
                               borderSide: BorderSide.none,
                             ),
                           ),
-                        ),
+                        ),),
+
                         const SizedBox(height: 35.0),
                         const Text(
                           'Password',
@@ -100,11 +108,18 @@ class _LoginPageState extends State<LoginPage> {
                             contentPadding: EdgeInsets.symmetric(vertical: 0.5, horizontal: 16.0),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 0.5,
+                              horizontal: 16.0,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
                               borderSide: BorderSide.none,
                             ),
                           ),
                           obscureText: true,
-                        ),
+                        ),),
                         if (textResLogin.isNotEmpty) ...[
                           const SizedBox(height: 10.0),
                           Text(
@@ -113,6 +128,8 @@ class _LoginPageState extends State<LoginPage> {
                             textAlign: TextAlign.center,
                           ),
                         ],
+
+                        Text(textResLogin),
                         const SizedBox(height: 20.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -180,6 +197,55 @@ class _LoginPageState extends State<LoginPage> {
         textResLogin = "Email or password cannot be empty";
       });
       return;
+    } else {
+      log(_usernameController.text + _passwordController.text);
+      var model = {
+        "email": _usernameController.text,
+        "password": _passwordController.text
+      };
+      log(model.toString());
+
+      // http.get(Uri.parse("$url")).then((value) {
+      //   log(value.body);
+      // }).catchError((onError) {
+      //   log(onError.toString());
+      //   log("123");
+      // });
+
+      http
+          .post(Uri.parse("$url/login"),
+              headers: {"Content-Type": "application/json; charset=utf-8"},
+              body: jsonEncode(model))
+          .then((value) {
+        log(value.body);
+        // var user = userPostLoginResponseFromJson(value.body);
+        var responseData = jsonDecode(value.body);
+
+        // ดึงข้อความและ uid จาก response
+        String message = responseData['message'];
+        int uid = responseData['uid'];
+        String type = responseData['type'];
+
+        if (message == "Login successful") {
+          if(type == "2"){
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => FindLottoPage(idx: uid)));
+
+          }else if(type == "1"){
+              Navigator.push(context,
+              MaterialPageRoute(builder: (context) => Random(idx: uid)));
+
+          }
+        } else {
+          setState(() {
+            textResLogin = "Email or password incorect";
+          });
+        }
+      }).catchError((err) {
+        setState(() {
+          textResLogin = err.toString();
+        });
+      });
     }
 
     var requestModel = UserLoginPostRequest(
