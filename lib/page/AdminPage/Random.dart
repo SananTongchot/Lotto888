@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class RandomPage extends StatefulWidget {
-  const RandomPage({super.key});
+  int idx = 0;
+  RandomPage({super.key, required this.idx});
 
   @override
   State<RandomPage> createState() => _RandomPageState();

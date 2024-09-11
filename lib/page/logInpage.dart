@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/respons/UserPostLoginRes.dart';
+import 'package:flutter_application_1/page/AdminPage/Random.dart';
 import 'package:flutter_application_1/page/FindLotto.dart';
 import 'RegisterPage.dart';
 import 'package:flutter_application_1/config/config.dart';
@@ -225,14 +225,14 @@ class _LoginpageState extends State<Loginpage> {
         String type = responseData['type'];
 
         if (message == "Login successful") {
-          if(type == "2"){
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => FindLottoPage(idx: uid)));
-
-          }else if(type == "1"){
-              Navigator.push(context,
-              MaterialPageRoute(builder: (context) => Random(idx: uid)));
-
+          if (type == "2") {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FindLottoPage(idx: uid)));
+          } else if (type == "1") {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => RandomPage(idx: uid)));
           }
         } else {
           setState(() {
