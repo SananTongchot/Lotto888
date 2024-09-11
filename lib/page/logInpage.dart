@@ -72,7 +72,7 @@ class _LoginpageState extends State<Loginpage> {
                         ),
                         const SizedBox(height: 5.0),
                         TextField(
-                          controller: _passwordController,
+                          controller: _usernameController,
                           decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
