@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
+=======
+import 'package:flutter_application_1/page/Wallet.dart';
+>>>>>>> main
 import 'package:flutter_application_1/page/logInpage.dart';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
@@ -210,10 +214,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                   borderRadius: BorderRadius.circular(20.0),
                                 ),
                               ),
+<<<<<<< HEAD
                               child: const Text(
                                 'Sign Up',
                                 style: TextStyle(color: Colors.white),
                               ),
+=======
+                              child: const Text('Sign Up'),
+>>>>>>> main
                             ),
                           ],
                         ),
@@ -264,9 +272,15 @@ class _RegisterPageState extends State<RegisterPage> {
             headers: {"Content-Type": "application/json"},
             body: userRegisterPostRequestToJson(model),
           );
+<<<<<<< HEAD
           log(response.statusCode.toString());
           log('Response: ${response.body}');
           if (response.statusCode == 201) {
+=======
+
+          log('Response: ${response.body}');
+          if (response.statusCode == 200) {
+>>>>>>> main
             Navigator.push(
               context,
               MaterialPageRoute(
