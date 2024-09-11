@@ -122,12 +122,7 @@ class _LoginpageState extends State<Loginpage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-<<<<<<< HEAD
-                                      builder: (context) =>
-                                          const RegisterPage()),
-=======
-                                      builder: (context) => const Wallet()),
->>>>>>> main
+                                      builder: (context) => Wallet()),
                                 );
                               },
                               style: ButtonStyle(

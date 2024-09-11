@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-=======
 import 'package:flutter_application_1/page/Wallet.dart';
->>>>>>> main
 import 'package:flutter_application_1/page/logInpage.dart';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
@@ -214,14 +211,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                   borderRadius: BorderRadius.circular(20.0),
                                 ),
                               ),
-<<<<<<< HEAD
                               child: const Text(
                                 'Sign Up',
                                 style: TextStyle(color: Colors.white),
                               ),
-=======
-                              child: const Text('Sign Up'),
->>>>>>> main
                             ),
                           ],
                         ),
@@ -265,22 +258,21 @@ class _RegisterPageState extends State<RegisterPage> {
         );
         log('Model: ${model.toString()}');
         log('JSON: ${userRegisterPostRequestToJson(model)}');
-
         try {
           var response = await http.post(
             Uri.parse("$url/register"),
             headers: {"Content-Type": "application/json"},
             body: userRegisterPostRequestToJson(model),
           );
-<<<<<<< HEAD
+
           log(response.statusCode.toString());
           log('Response: ${response.body}');
-          if (response.statusCode == 201) {
-=======
 
-          log('Response: ${response.body}');
-          if (response.statusCode == 200) {
->>>>>>> main
+          // ตรวจสอบว่า statusCode เป็น 201 (สร้างสำเร็จ)
+          if (response.statusCode == 201) {
+            log('Registration successful.');
+
+            // นำทางไปยังหน้า Login เมื่อการลงทะเบียนสำเร็จ
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -288,21 +280,23 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             );
           } else {
+            // ถ้าสถานะไม่ใช่ 201 ให้แสดงข้อความข้อผิดพลาด
             setState(() {
               text = "Error: Registration failed. Please try again.";
             });
           }
         } catch (e) {
+          // จัดการข้อผิดพลาดจากการเชื่อมต่อ
           log('Error: ${e.toString()}');
           setState(() {
             text = "Error: Unable to connect to the server.";
           });
         }
       }
-    } else {
-      setState(() {
-        text = "Error: Passwords do not match.";
-      });
+      // } else {
+      //   setState(() {
+      //     text = "Error: Passwords do not match.";
+      //   });
     }
   }
 }
