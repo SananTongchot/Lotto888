@@ -293,10 +293,6 @@ class _RegisterPageState extends State<RegisterPage> {
           });
         }
       }
-      // } else {
-      //   setState(() {
-      //     text = "Error: Passwords do not match.";
-      //   });
     }
   }
 }
