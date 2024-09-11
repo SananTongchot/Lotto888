@@ -201,28 +201,30 @@ class _LoginpageState extends State<Loginpage> {
         "password": _passwordController.text
       };
       log(model.toString());
-      var test =
-          await http.get(Uri.parse("http://localhost:8080/")).then((value) {
-        log(value.body);
-      }).catchError((onError) {
-        log(onError.toString());
-      });
 
-      // http
-      //     .post(Uri.parse("$url/login"),
-      //         headers: {"Content-Type": "application/json; charset=utf-8"},
-      //         body: jsonEncode(model))
-      //     .then((value) {
-      //   var user = userPostLoginResponseFromJson(value.body);
-      //   Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //           builder: (context) => FindLottoPage(idx: user.uid)));
-      // }).catchError((err) {
-      //   setState(() {
-      //     textResLogin = "Email or password incorrect2";
-      //   });
+      // http.get(Uri.parse("$url")).then((value) {
+      //   log(value.body);
+      // }).catchError((onError) {
+      //   log(onError.toString());
+      //   log("123");
       // });
+
+      http
+          .post(Uri.parse("$url/login"),
+              headers: {"Content-Type": "application/json; charset=utf-8"},
+              body: jsonEncode(model))
+          .then((value) {
+        log(value.body);
+        var user = userPostLoginResponseFromJson(value.body);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => FindLottoPage(idx: user.uid)));
+      }).catchError((err) {
+        setState(() {
+          textResLogin = "Email or password incorrect";
+        });
+      });
     }
   }
 }
