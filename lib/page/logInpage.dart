@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/respons/UserPostLoginRes.dart';
+import 'package:flutter_application_1/model/request/UserPostLoginRes.dart';
 import 'package:flutter_application_1/page/FindLotto.dart';
 import 'RegisterPage.dart';
 import 'package:flutter_application_1/config/config.dart';

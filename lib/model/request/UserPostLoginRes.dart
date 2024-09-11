@@ -17,7 +17,7 @@ class UserPostLoginResponse {
   String email;
   String password;
   String type;
-  String credit;
+  int credit;
 
   UserPostLoginResponse({
     required this.uid,
