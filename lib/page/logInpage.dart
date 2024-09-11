@@ -3,8 +3,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/respons/UserPostLoginRes.dart';
-import 'package:flutter_application_1/page/AdminPage/Random.dart';
 import 'package:flutter_application_1/page/FindLotto.dart';
+import 'package:flutter_application_1/page/Wallet.dart';
 import 'RegisterPage.dart';
 import 'package:flutter_application_1/config/config.dart';
 import 'package:http/http.dart' as http;
@@ -123,8 +123,7 @@ class _LoginpageState extends State<Loginpage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const Registerpage()),
+                                      builder: (context) => const Wallet()),
                                 );
                               },
                               style: ButtonStyle(
@@ -220,25 +219,11 @@ class _LoginpageState extends State<Loginpage> {
         var responseData = jsonDecode(value.body);
 
         // ดึงข้อความและ uid จาก response
-        String message = responseData['message'];
+        // String message = responseData['message'];
         int uid = responseData['uid'];
-        String type = responseData['type'];
 
-        if (message == "Login successful") {
-          if (type == "2") {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => FindLottoPage(idx: uid)));
-          } else if (type == "1") {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => RandomPage(idx: uid)));
-          }
-        } else {
-          setState(() {
-            textResLogin = "Email or password incorect";
-          });
-        }
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => FindLottoPage(idx: uid)));
       }).catchError((err) {
         setState(() {
           textResLogin = err.toString();
