@@ -123,7 +123,7 @@ class _LoginpageState extends State<Loginpage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const Registerpage()),
+                                          const RegisterPage()),
                                 );
                               },
                               style: ButtonStyle(

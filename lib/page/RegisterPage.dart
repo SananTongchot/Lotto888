@@ -3,7 +3,7 @@ import 'package:flutter_application_1/page/logInpage.dart';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:flutter_application_1/config/config.dart';
-import 'package:flutter_application_1/model/request/UserPostRegisterReq.dart';
+import 'package:flutter_application_1/model/request/UserRegisterPostReq.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -252,7 +252,7 @@ class _RegisterPageState extends State<RegisterPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const LoginPage(),
+              builder: (context) =>  Loginpage(),
             ),
           );
         } else {
