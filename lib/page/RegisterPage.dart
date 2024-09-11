@@ -282,7 +282,7 @@ class _RegisterPageState extends State<RegisterPage> {
           } else {
             // ถ้าสถานะไม่ใช่ 201 ให้แสดงข้อความข้อผิดพลาด
             setState(() {
-              text = "Error: Registration failed. Please try again.";
+              text = "Error:"+response.body;
             });
           }
         } catch (e) {
