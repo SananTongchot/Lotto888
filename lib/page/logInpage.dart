@@ -46,11 +46,17 @@ class _LoginPageState extends State<LoginPage> {
             constraints: BoxConstraints(
               maxWidth: isLandscape ? mediaQuery.size.width * 0.8 : 335.0,
             ),
-            child: Stack(
-              alignment: Alignment.topCenter,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Image.asset(
+                  'assets/images/LOTTObg.png',
+                  width: 220.0,
+                  height: 220.0,
+                  fit: BoxFit.contain,
+                ),
                 Card(
-                  margin: const EdgeInsets.only(top: 150.0),
+                  margin: const EdgeInsets.only(top: 20.0),
                   color: Colors.white.withOpacity(0.8),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0),
@@ -121,14 +127,14 @@ class _LoginPageState extends State<LoginPage> {
                                 );
                               },
                               style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
+                                backgroundColor: WidgetStateProperty.all<Color>(
                                   const Color(0xFF768CFE),
                                 ),
-                                foregroundColor: MaterialStateProperty.all<Color>(
+                                foregroundColor: WidgetStateProperty.all<Color>(
                                   Colors.white,
                                 ),
-                                elevation: MaterialStateProperty.all<double>(5.0),
-                                shape: MaterialStateProperty.all<OutlinedBorder>(
+                                elevation: WidgetStateProperty.all<double>(5.0),
+                                shape: WidgetStateProperty.all<OutlinedBorder>(
                                   RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0),
                                   ),
@@ -137,18 +143,16 @@ class _LoginPageState extends State<LoginPage> {
                               child: const Text('Sign Up'),
                             ),
                             ElevatedButton(
-                              onPressed: () {
-                                login();
-                              },
+                              onPressed: login,
                               style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
+                                backgroundColor: WidgetStateProperty.all<Color>(
                                   const Color(0xFF768CFE),
                                 ),
-                                foregroundColor: MaterialStateProperty.all<Color>(
+                                foregroundColor: WidgetStateProperty.all<Color>(
                                   Colors.white,
                                 ),
-                                elevation: MaterialStateProperty.all<double>(5.0),
-                                shape: MaterialStateProperty.all<OutlinedBorder>(
+                                elevation: WidgetStateProperty.all<double>(5.0),
+                                shape: WidgetStateProperty.all<OutlinedBorder>(
                                   RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0),
                                   ),
@@ -160,15 +164,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ],
                     ),
-                  ),
-                ),
-                Positioned(
-                  top: -50.0,
-                  child: Image.asset(
-                    'assets/images/LOTTObg.png',
-                    width: 220.0,
-                    height: 220.0,
-                    fit: BoxFit.contain,
                   ),
                 ),
               ],
@@ -192,16 +187,11 @@ class _LoginPageState extends State<LoginPage> {
       password: _passwordController.text,
     );
 
-    http
-        .post(
+    http.post(
       Uri.parse("$url/login"),
       headers: {"Content-Type": "application/json; charset=utf-8"},
       body: userLoginPostRequestToJson(requestModel),
-    )
-        .then((response) {
-      log('Response Status: ${response.statusCode}');
-      log('Response Body: ${response.body}');
-
+    ).then((response) {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         var userId = data['userId']; // Ensure backend returns 'userId'
@@ -221,9 +211,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         textResLogin = "An error occurred. Please try again.";
       });
-      log('Login Error: ${error.toString()}');
+      log(error.toString());
     });
-
-    log("Login function executed");
   }
 }
