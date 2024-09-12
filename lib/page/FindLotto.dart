@@ -20,8 +20,7 @@ class _FindLottoPageState extends State<FindLottoPage> {
 
   List<TextEditingController> numControllers =
       List.generate(6, (index) => TextEditingController());
-  List<FocusNode> focusNodes =
-      List.generate(6, (index) => FocusNode());
+  List<FocusNode> focusNodes = List.generate(6, (index) => FocusNode());
 
   int lastFilledIndex = -1; // Index of the last filled TextField
 
@@ -194,21 +193,21 @@ class _FindLottoPageState extends State<FindLottoPage> {
                                 if (value.isNotEmpty) {
                                   lastFilledIndex = index;
                                   if (index < 5) {
-                                    FocusScope.of(context).requestFocus(
-                                        focusNodes[index + 1]);
+                                    FocusScope.of(context)
+                                        .requestFocus(focusNodes[index + 1]);
                                   }
                                 } else {
                                   if (index > 0 && lastFilledIndex == index) {
-                                    FocusScope.of(context).requestFocus(
-                                        focusNodes[index - 1]);
+                                    FocusScope.of(context)
+                                        .requestFocus(focusNodes[index - 1]);
                                     lastFilledIndex = index - 1;
                                   }
                                 }
                               },
                               onEditingComplete: () {
                                 if (index < 5) {
-                                  FocusScope.of(context).requestFocus(
-                                      focusNodes[index + 1]);
+                                  FocusScope.of(context)
+                                      .requestFocus(focusNodes[index + 1]);
                                 } else {
                                   FocusScope.of(context).unfocus();
                                 }
@@ -321,7 +320,67 @@ class _FindLottoPageState extends State<FindLottoPage> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  // แสดง AlertDialog เพื่อยืนยันการซื้อลอตเตอรี
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text(
+                                          "ยืนยัน",
+                                          textAlign: TextAlign
+                                              .center, // จัดข้อความให้อยู่ตรงกลาง
+                                          style: TextStyle(
+                                            fontWeight: FontWeight
+                                                .bold, // ทำให้ตัวอักษรหนา
+                                            fontSize:
+                                                18, // ปรับขนาดตัวอักษรหากต้องการ
+                                          ),
+                                        ),
+                                        content: const Text(
+                                          "คุณจะซื้อลอตเตอรีนี้ใช่มั้ย?",
+                                          textAlign: TextAlign
+                                              .center, // จัดข้อความให้อยู่ตรงกลาง
+                                        ),
+                                        actions: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .center, // จัดให้อยู่ตรงกลาง
+                                            children: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(); // ปิด dialog เมื่อกด "ใช่"
+                                                },
+                                                child: const Text("ใช่"),
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor: Colors.white,
+                                                  backgroundColor:
+                                                      const Color(0xFF2445EF),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                  width:
+                                                      70), // ระยะห่างระหว่างปุ่ม
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(); // ปิด dialog เมื่อกด "ไม่"
+                                                },
+                                                child: const Text("ไม่"),
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor: Colors.white,
+                                                  backgroundColor:
+                                                      const Color(0xFF2445EF),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
                                 style: ElevatedButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 5, horizontal: 15),
