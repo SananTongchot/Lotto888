@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/page/AdminPage/ChckPrizeAdmin.dart';
 import 'package:flutter_application_1/page/FindLotto.dart';
 import 'package:flutter_application_1/page/Wallet.dart';
 import 'RegisterPage.dart';
@@ -187,48 +188,54 @@ class _LoginpageState extends State<Loginpage> {
   }
 
   Future<void> login() async {
-    var config = await Configuration.getConfig();
-    var url = config['apiEndpoint'];
+  var config = await Configuration.getConfig();
+  var url = config['apiEndpoint'];
 
-    if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
+  if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
+    setState(() {
+      textResLogin = "Email or password incorrect";
+    });
+  } else {
+    log(_usernameController.text + _passwordController.text);
+    var model = {
+      "email": _usernameController.text,
+      "password": _passwordController.text
+    };
+    log(model.toString());
+
+    http
+        .post(Uri.parse("$url/login"),
+            headers: {"Content-Type": "application/json; charset=utf-8"},
+            body: jsonEncode(model))
+        .then((value) {
+      log(value.body);
+      var responseData = jsonDecode(value.body);
+
+      // ดึงข้อความ, uid และ type จาก response
+      int uid = responseData['uid'];
+      String type = responseData['type'];
+      log(type);
+
+      // ตรวจสอบว่าเป็น Admin หรือ User โดยเช็คจากค่า type
+      if (type == "1") {
+        // ถ้า type เป็น 1 นำไปหน้า CheckPrizeAdmin (Admin)
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CheckPrizeAdmin(idx: uid)),
+        );
+      } else if (type == "2") {
+        // ถ้า type เป็น 2 นำไปหน้า FindLottoPage (User)
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FindLottoPage(idx: uid)),
+        );
+      }
+    }).catchError((err) {
       setState(() {
-        textResLogin = "Email or password incorrect";
+        textResLogin = err.toString();
       });
-    } else {
-      log(_usernameController.text + _passwordController.text);
-      var model = {
-        "email": _usernameController.text,
-        "password": _passwordController.text
-      };
-      log(model.toString());
-
-      // http.get(Uri.parse("$url")).then((value) {
-      //   log(value.body);
-      // }).catchError((onError) {
-      //   log(onError.toString());
-      //   log("123");
-      // });
-
-      http
-          .post(Uri.parse("$url/login"),
-              headers: {"Content-Type": "application/json; charset=utf-8"},
-              body: jsonEncode(model))
-          .then((value) {
-        log(value.body);
-        // var user = userPostLoginResponseFromJson(value.body);
-        var responseData = jsonDecode(value.body);
-
-        // ดึงข้อความและ uid จาก response
-        // String message = responseData['message'];
-        int uid = responseData['uid'];
-
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => FindLottoPage(idx: uid)));
-      }).catchError((err) {
-        setState(() {
-          textResLogin = err.toString();
-        });
-      });
-    }
+    });
   }
+}
+
 }
