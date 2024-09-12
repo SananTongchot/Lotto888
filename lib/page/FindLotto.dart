@@ -2,8 +2,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/config/config.dart';
 import 'package:flutter_application_1/model/response/LotteryGetResponse.dart';
+import 'package:flutter_application_1/page/Wallet.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:provider/provider.dart';
 
 class FindLottoPage extends StatefulWidget {
   final int idx;
@@ -20,8 +23,7 @@ class _FindLottoPageState extends State<FindLottoPage> {
 
   List<TextEditingController> numControllers =
       List.generate(6, (index) => TextEditingController());
-  List<FocusNode> focusNodes =
-      List.generate(6, (index) => FocusNode());
+  List<FocusNode> focusNodes = List.generate(6, (index) => FocusNode());
 
   int lastFilledIndex = -1; // Index of the last filled TextField
 
@@ -73,6 +75,7 @@ class _FindLottoPageState extends State<FindLottoPage> {
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -194,21 +197,21 @@ class _FindLottoPageState extends State<FindLottoPage> {
                                 if (value.isNotEmpty) {
                                   lastFilledIndex = index;
                                   if (index < 5) {
-                                    FocusScope.of(context).requestFocus(
-                                        focusNodes[index + 1]);
+                                    FocusScope.of(context)
+                                        .requestFocus(focusNodes[index + 1]);
                                   }
                                 } else {
                                   if (index > 0 && lastFilledIndex == index) {
-                                    FocusScope.of(context).requestFocus(
-                                        focusNodes[index - 1]);
+                                    FocusScope.of(context)
+                                        .requestFocus(focusNodes[index - 1]);
                                     lastFilledIndex = index - 1;
                                   }
                                 }
                               },
                               onEditingComplete: () {
                                 if (index < 5) {
-                                  FocusScope.of(context).requestFocus(
-                                      focusNodes[index + 1]);
+                                  FocusScope.of(context)
+                                      .requestFocus(focusNodes[index + 1]);
                                 } else {
                                   FocusScope.of(context).unfocus();
                                 }
@@ -321,7 +324,14 @@ class _FindLottoPageState extends State<FindLottoPage> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  cartProvider.addItem(lottery.lid,
+                                      lottery.price, lottery.lottoNumber);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Wallet()));
+                                },
                                 style: ElevatedButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 5, horizontal: 15),
@@ -404,5 +414,102 @@ class _FindLottoPageState extends State<FindLottoPage> {
     setState(() {
       lotteries = filteredLotteries;
     });
+  }
+}
+
+class CartItem {
+  final int id;
+  final String LottoNmuber;
+  final int quantity;
+  final int price;
+
+  CartItem({
+    required this.id,
+    required this.LottoNmuber,
+    required this.quantity,
+    required this.price,
+  });
+}
+
+class CartProvider with ChangeNotifier {
+  Map<String, CartItem> _items = {};
+
+  Map<String, CartItem> get items {
+    return {..._items};
+  }
+
+  double get totalAmount {
+    double total = 0.0;
+    _items.forEach((key, cartItem) {
+      total += cartItem.price * cartItem.quantity;
+    });
+    return total;
+  }
+
+  void addItem(int productId, int price, String LottoNmuber) {
+    if (_items.containsKey(productId)) {
+      _items.update(
+        productId.toString(),
+        (existingCartItem) => CartItem(
+          id: existingCartItem.id,
+          LottoNmuber: existingCartItem.LottoNmuber,
+          quantity: existingCartItem.quantity + 1,
+          price: existingCartItem.price,
+        ),
+      );
+    } else {
+      _items.putIfAbsent(
+        productId.toString(),
+        () => CartItem(
+          id: productId, // ใช้ productId ตรงๆ เป็น id
+          LottoNmuber: LottoNmuber,
+          quantity: 1,
+          price: price,
+        ),
+      );
+    }
+    notifyListeners();
+  }
+
+  void removeItem(String productId) {
+    log("Attempting to remove item with ID: $productId");
+
+    // แสดงรายการสินค้าในตะกร้าทั้งหมด
+    _items.forEach((key, item) {
+      log("Item in cart - ID: ${item.id}, Quantity: ${item.quantity}");
+    });
+
+    try {
+      if (_items.containsKey(productId)) {
+        // ดึงข้อมูลของสินค้า
+        final cartItem = _items[productId]!;
+
+        if (cartItem.quantity > 1) {
+          // หากจำนวนสินค้ามากกว่า 1 ชิ้น ลดจำนวนลงทีละชิ้น
+          _items.update(
+            productId,
+            (existingCartItem) => CartItem(
+              id: existingCartItem.id,
+              LottoNmuber: existingCartItem.LottoNmuber,
+              quantity: existingCartItem.quantity - 1,
+              price: existingCartItem.price,
+            ),
+          );
+        } else {
+          // หากจำนวนสินค้าน้อยกว่าหรือเท่ากับ 1 ชิ้น ลบออกจากตะกร้า
+          _items.remove(productId);
+        }
+
+        // อัพเดต UI
+        notifyListeners();
+        log("Item updated or removed successfully");
+      } else {
+        log("Item with ID: $productId not found");
+        throw Exception('Item not found');
+      }
+    } catch (e) {
+      log('Failed to remove item: ${e.toString()}');
+      throw Exception('Failed to remove item: ${e.toString()}');
+    }
   }
 }
