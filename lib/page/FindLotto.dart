@@ -371,7 +371,7 @@ class _FindLottoPageState extends State<FindLottoPage> {
                                                 style: TextButton.styleFrom(
                                                   foregroundColor: Colors.white,
                                                   backgroundColor:
-                                                      const Color(0xFF2445EF),
+                                                      Color.fromARGB(255, 251, 61, 61),
                                                 ),
                                               ),
                                             ],
