@@ -18,6 +18,7 @@ class FindLottoPage extends StatefulWidget {
 }
 
 class _FindLottoPageState extends State<FindLottoPage> {
+
   String url = '';
   List<LotteryGetResponse> lotteries = [];
 
@@ -325,12 +326,6 @@ class _FindLottoPageState extends State<FindLottoPage> {
                             children: [
                               ElevatedButton(
                                 onPressed: () {
-                                  cartProvider.addItem(lottery.lid.toString(),
-                                      lottery.price, lottery.lottoNumber);
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Wallet()));
                                   // แสดง AlertDialog เพื่อยืนยันการซื้อลอตเตอรี
                                   showDialog(
                                     context: context,
@@ -359,8 +354,17 @@ class _FindLottoPageState extends State<FindLottoPage> {
                                             children: [
                                               TextButton(
                                                 onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pop(); // ปิด dialog เมื่อกด "ใช่"
+                                                  cartProvider.addItem(
+                                                      lottery.lid.toString(),
+                                                      lottery.price,
+                                                      lottery.lottoNumber);
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              Wallet(
+                                                                idx: idx,
+                                                              ))); // ปิด dialog เมื่อกด "ใช่"
                                                 },
                                                 child: const Text("ใช่"),
                                                 style: TextButton.styleFrom(
@@ -381,7 +385,8 @@ class _FindLottoPageState extends State<FindLottoPage> {
                                                 style: TextButton.styleFrom(
                                                   foregroundColor: Colors.white,
                                                   backgroundColor:
-                                                      Color.fromARGB(255, 251, 61, 61),
+                                                      Color.fromARGB(
+                                                          255, 251, 61, 61),
                                                 ),
                                               ),
                                             ],
@@ -506,27 +511,27 @@ class CartProvider with ChangeNotifier {
   }
 
   void addItem(String productId, int price, String LottoNmuber) {
-    if (_items.containsKey(productId)) {
-      _items.update(
-        productId.toString(),
-        (existingCartItem) => CartItem(
-          id: existingCartItem.id,
-          LottoNmuber: existingCartItem.LottoNmuber,
-          quantity: existingCartItem.quantity + 1,
-          price: existingCartItem.price,
-        ),
-      );
-    } else {
-      _items.putIfAbsent(
-        productId.toString(),
-        () => CartItem(
-          id: productId, // ใช้ productId ตรงๆ เป็น id
-          LottoNmuber: LottoNmuber,
-          quantity: 1,
-          price: price,
-        ),
-      );
-    }
+    // if (_items.containsKey(productId)) {
+    //   _items.update(
+    //     productId.toString(),
+    //     (existingCartItem) => CartItem(
+    //       id: existingCartItem.id,
+    //       LottoNmuber: existingCartItem.LottoNmuber,
+    //       quantity: existingCartItem.quantity + 1,
+    //       price: existingCartItem.price,
+    //     ),
+    //   );
+    // } else {
+    _items.putIfAbsent(
+      productId.toString(),
+      () => CartItem(
+        id: productId, // ใช้ productId ตรงๆ เป็น id
+        LottoNmuber: LottoNmuber,
+        quantity: 1,
+        price: price,
+      ),
+    );
+    // }
     notifyListeners();
   }
 

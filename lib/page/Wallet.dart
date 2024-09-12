@@ -1,13 +1,25 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_application_1/config/config.dart';
 import 'package:flutter_application_1/page/FindLotto.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class Wallet extends StatefulWidget {
+  int idx = 0;
+ Wallet({super.key, required this.idx});
   @override
   State<Wallet> createState() => _WalletState();
 }
 
 class _WalletState extends State<Wallet> {
+  int count = 0; // จำนวนสินค้า
+  int countPrice = 0; // ราคารวมสินค้า
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,6 +80,14 @@ class _WalletState extends State<Wallet> {
       body: Consumer<CartProvider>(
         builder: (context, cartProvider, child) {
           final items = cartProvider.items;
+
+          // คำนวณจำนวนและราคารวมใหม่
+          count = items.length; // นับจำนวนสินค้าทั้งหมด
+          countPrice = items.values.fold(
+              0,
+              (sum, item) =>
+                  sum +
+                  item.quantity * 80); // คำนวณราคารวม (สมมติสินค้าราคา 80 บาท)
 
           return Column(
             children: [
@@ -201,27 +221,8 @@ class _WalletState extends State<Wallet> {
                                 children: [
                                   ElevatedButton(
                                     onPressed: () {
-                                      // cartProvider
-                                      //     .removeItem(cartItem.id.toString());
-                                      try {
-                                        cartProvider
-                                            .removeItem(cartItem.id.toString());
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                                'Item quantity updated or removed'),
-                                          ),
-                                        );
-                                      } catch (e) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                                'Failed to update item: ${e.toString()}'),
-                                          ),
-                                        );
-                                      }
+                                      cartProvider
+                                          .removeItem(cartItem.id.toString());
                                     },
                                     style: ElevatedButton.styleFrom(
                                       padding: const EdgeInsets.symmetric(
@@ -242,8 +243,8 @@ class _WalletState extends State<Wallet> {
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
-                                    "${cartItem.quantity}" 'x',
-                                    style: TextStyle(
+                                    "${cartItem.quantity}x",
+                                    style: const TextStyle(
                                       fontSize: 14,
                                       color: Color.fromARGB(255, 255, 96, 96),
                                     ),
@@ -258,53 +259,56 @@ class _WalletState extends State<Wallet> {
                   },
                 ),
               ),
-
+              // แสดงจำนวนและราคารวม
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 190, 0, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           'จำนวน',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
-                          '2',
-                          style: TextStyle(
+                          count.toString(), // แสดงจำนวนสินค้าทั้งหมด
+                          style: const TextStyle(
                             fontSize: 20,
                           ),
                         ),
                       ],
                     ),
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           'ราคา',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
-                          '160',
-                          style: TextStyle(
+                          countPrice.toString(), // แสดงราคารวมสินค้า
+                          style: const TextStyle(
                             fontSize: 20,
                           ),
                         ),
                       ],
                     ),
                     FilledButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        payLottetry();
+                        // Action for payment
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
                             const Color.fromARGB(255, 118, 140, 254),
@@ -357,5 +361,27 @@ class _WalletState extends State<Wallet> {
         },
       ),
     );
+  }
+
+  void payLottetry() async {
+    
+    var config = await Configuration.getConfig();
+    var url = config['apiEndpoint'];
+    var model = {
+      "uid": idx,
+      "lids": ['','',''],
+
+    };
+    http
+        .post(Uri.parse("$url/buy_lottery"),
+            headers: {"Content-Type": "application/json; charset=utf-8"},
+            body: jsonEncode(model))
+        .then((value) {
+      log(value.body);
+      // Navigator.push(context,
+      //     MaterialPageRoute(builder: (context) => FindLottoPage(idx: uid)));
+    }).catchError((err) {
+      setState(() {});
+    });
   }
 }
