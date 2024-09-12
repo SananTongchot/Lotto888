@@ -18,8 +18,12 @@ class _FindLottoPageState extends State<FindLottoPage> {
   String url = '';
   List<LotteryGetResponse> lotteries = [];
 
-  // Create a list of TextEditingControllers
-  List<TextEditingController> numControllers = List.generate(6, (index) => TextEditingController());
+  List<TextEditingController> numControllers =
+      List.generate(6, (index) => TextEditingController());
+  List<FocusNode> focusNodes =
+      List.generate(6, (index) => FocusNode());
+
+  int lastFilledIndex = -1; // Index of the last filled TextField
 
   @override
   void initState() {
@@ -27,12 +31,11 @@ class _FindLottoPageState extends State<FindLottoPage> {
     Configuration.getConfig().then((config) {
       setState(() {
         url = config['apiEndpoint'];
-        getLotto(); // Fetch lotto data after URL is set
+        getLotto(); // Fetch all lotto data initially
       });
     });
   }
 
-  // Fetch lottery data
   Future<void> getLotto() async {
     if (url.isEmpty) {
       log("API URL is not set.");
@@ -48,6 +51,7 @@ class _FindLottoPageState extends State<FindLottoPage> {
       if (response.statusCode == 200) {
         setState(() {
           lotteries = lotteryGetResponseFromJson(response.body);
+          resetControllers(); // Reset controllers after fetching data
         });
       } else {
         log('Failed to load lotto data: ${response.statusCode}');
@@ -57,12 +61,22 @@ class _FindLottoPageState extends State<FindLottoPage> {
     }
   }
 
+  void resetControllers() {
+    for (var controller in numControllers) {
+      controller.clear(); // Clear text in each controller
+    }
+    lastFilledIndex = -1; // Reset the index of last filled TextField
+    for (var node in focusNodes) {
+      node.unfocus(); // Unfocus any focus nodes
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: Colors.black, // Set the icon color to black
+          color: Colors.black,
         ),
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 235, 229, 229),
@@ -73,9 +87,9 @@ class _FindLottoPageState extends State<FindLottoPage> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.person), // Person icon
+            icon: const Icon(Icons.person),
             onPressed: () {
-              // Action when person icon is pressed
+              getLotto(); // Refresh data and reset controllers
             },
           ),
         ],
@@ -101,7 +115,6 @@ class _FindLottoPageState extends State<FindLottoPage> {
               title: const Text('Home'),
               onTap: () {
                 Navigator.pop(context);
-                // Action when Home menu is selected
               },
             ),
             ListTile(
@@ -151,25 +164,55 @@ class _FindLottoPageState extends State<FindLottoPage> {
                             ),
                             child: TextField(
                               controller: numControllers[index],
+                              focusNode: focusNodes[index],
                               keyboardType: TextInputType.number,
                               maxLength: 1,
                               decoration: const InputDecoration(
                                 filled: true,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                                  borderSide: BorderSide(color: Colors.white, width: 0.0),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  borderSide: BorderSide(
+                                      color: Colors.white, width: 0.0),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.transparent, width: 0.0),
-                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                  borderSide: BorderSide(
+                                      color: Colors.transparent, width: 0.0),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                                  borderSide: BorderSide(color: Colors.transparent, width: 0.0),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  borderSide: BorderSide(
+                                      color: Colors.transparent, width: 0.0),
                                 ),
                                 counterText: "",
                               ),
+                              onChanged: (value) {
+                                if (value.isNotEmpty) {
+                                  lastFilledIndex = index;
+                                  if (index < 5) {
+                                    FocusScope.of(context).requestFocus(
+                                        focusNodes[index + 1]);
+                                  }
+                                } else {
+                                  if (index > 0 && lastFilledIndex == index) {
+                                    FocusScope.of(context).requestFocus(
+                                        focusNodes[index - 1]);
+                                    lastFilledIndex = index - 1;
+                                  }
+                                }
+                              },
+                              onEditingComplete: () {
+                                if (index < 5) {
+                                  FocusScope.of(context).requestFocus(
+                                      focusNodes[index + 1]);
+                                } else {
+                                  FocusScope.of(context).unfocus();
+                                }
+                              },
                             ),
                           );
                         }),
@@ -180,13 +223,14 @@ class _FindLottoPageState extends State<FindLottoPage> {
                       width: 200,
                       child: FilledButton(
                         onPressed: () {
-                          // Navigator.pop(context);
-                          // Call getnum() to log the values of numControllers
                           getnum();
+                          filterLotto(); // Call the filterLotto method
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 118, 140, 254),
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          backgroundColor:
+                              const Color.fromARGB(255, 118, 140, 254),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
                         ),
                         child: const Text('ค้นหาล๊อตเตอรี่'),
                       ),
@@ -256,13 +300,14 @@ class _FindLottoPageState extends State<FindLottoPage> {
                                 ),
                               ),
                               Container(
-                                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 10),
                                 decoration: BoxDecoration(
                                   color: Colors.blue[300],
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Text(
-                                  lottery.lottoNumber, // Use the correct property name
+                                  lottery.lottoNumber,
                                   style: const TextStyle(
                                     fontSize: 20,
                                     color: Colors.white,
@@ -278,7 +323,8 @@ class _FindLottoPageState extends State<FindLottoPage> {
                               ElevatedButton(
                                 onPressed: () {},
                                 style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 15),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   ),
@@ -290,14 +336,6 @@ class _FindLottoPageState extends State<FindLottoPage> {
                                     color: Colors.black,
                                     fontSize: 14,
                                   ),
-                                ),
-                              ),
-                              const SizedBox(height: 5),
-                              const Text(
-                                '100x',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
                                 ),
                               ),
                             ],
@@ -343,8 +381,28 @@ class _FindLottoPageState extends State<FindLottoPage> {
   }
 
   void getnum() {
-    // Log the values of all numControllers
-    final numbers = numControllers.map((controller) => controller.text).join('');
+    final numbers =
+        numControllers.map((controller) => controller.text).join('');
     log(numbers);
+  }
+
+  void filterLotto() {
+    final searchQuery =
+        numControllers.map((controller) => controller.text).join('');
+    List<LotteryGetResponse> filteredLotteries = [];
+
+    log('Number of lotteries before filtering: ${lotteries.length}');
+
+    if (searchQuery.isNotEmpty) {
+      filteredLotteries = lotteries.where((lottery) {
+        return lottery.lottoNumber.contains(searchQuery);
+      }).toList();
+    } else {
+      filteredLotteries = lotteries;
+    }
+
+    setState(() {
+      lotteries = filteredLotteries;
+    });
   }
 }
