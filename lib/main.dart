@@ -22,7 +22,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Lotto888',
-      home: FindLottoPage(idx: 0,),
+      // home: FindLottoPage(idx: 0,),
+      home: Loginpage(),
     );
   }
 }
