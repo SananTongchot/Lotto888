@@ -7,11 +7,19 @@ import 'package:flutter_application_1/page/CheckPrize.dart';
 import 'package:flutter_application_1/page/FindLotto.dart';
 import 'package:flutter_application_1/page/logInpage.dart';
 import 'package:flutter_application_1/page/ProfileUser.dart';
+import 'package:provider/provider.dart';
 
 //import 'package:flutter_application_1/page/CheckPrize.dart';
 // import 'package:flutter_application_1/page/logInpage.dart';
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -22,7 +30,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Lotto888',
-      home: FindLottoPage(idx: 0,),
+      home: FindLottoPage(
+        idx: 0,
+      ),
     );
   }
 }

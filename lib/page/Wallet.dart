@@ -70,20 +70,20 @@ class _WalletState extends State<Wallet> {
         ),
       ),
       body: Consumer<CartProvider>(
-        builder: (context, cartProvider, child){
+        builder: (context, cartProvider, child) {
           final items = cartProvider.items;
-          Column(
+          return Column(
             children: [
               SizedBox(
                 width: double.infinity,
                 height: 103,
                 child: ClipRRect(
                   borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(30), // การโค้งมนที่มุมล่างซ้าย
-                    bottomRight: Radius.circular(30), // การโค้งมนที่มุมล่างขวา
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
                   ),
                   child: Container(
-                    color: const Color(0xFF2445EF), // สีของ Container ในครึ่งบน
+                    color: const Color(0xFF2445EF),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
@@ -105,12 +105,11 @@ class _WalletState extends State<Wallet> {
                                   ),
                                   Text(
                                     '฿'
-                                    '123456', // แสดงตัวเลข 6 หลัก
+                                    '123456',
                                     style: TextStyle(
                                       fontSize: 30,
                                       color: Colors.white,
-                                      fontWeight: FontWeight
-                                          .bold, // ทำให้ตัวเลขเด่นขึ้น
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ],
@@ -118,8 +117,7 @@ class _WalletState extends State<Wallet> {
                               Image.asset('assets/images/Icon.png'),
                             ],
                           ),
-                          const SizedBox(
-                              height: 8), // ระยะห่างระหว่างข้อความและ GridView
+                          const SizedBox(height: 8),
                         ],
                       ),
                     ),
@@ -131,19 +129,17 @@ class _WalletState extends State<Wallet> {
                 height: 103,
                 child: Card(
                   shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(20), // การโค้งมนของการ์ด
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: Colors.lightBlue[50], // สีพื้นหลังของการ์ด
+                      color: Colors.lightBlue[50],
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // ส่วนของราคาที่เป็นสีแดง
                         const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -169,7 +165,6 @@ class _WalletState extends State<Wallet> {
                             ),
                           ],
                         ),
-                        // ส่วนของหมายเลขสลาก
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -186,7 +181,7 @@ class _WalletState extends State<Wallet> {
                                 horizontal: 10,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.blue[300], // สีพื้นหลังของเลขสลาก
+                                color: Colors.blue[300],
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: const Text(
@@ -199,7 +194,6 @@ class _WalletState extends State<Wallet> {
                             ),
                           ],
                         ),
-                        // ปุ่มและตัวคูณ
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
@@ -242,19 +236,17 @@ class _WalletState extends State<Wallet> {
                 height: 103,
                 child: Card(
                   shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(20), // การโค้งมนของการ์ด
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: Colors.lightBlue[50], // สีพื้นหลังของการ์ด
+                      color: Colors.lightBlue[50],
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // ส่วนของราคาที่เป็นสีแดง
                         const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -280,7 +272,6 @@ class _WalletState extends State<Wallet> {
                             ),
                           ],
                         ),
-                        // ส่วนของหมายเลขสลาก
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -297,7 +288,7 @@ class _WalletState extends State<Wallet> {
                                 horizontal: 10,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.blue[300], // สีพื้นหลังของเลขสลาก
+                                color: Colors.blue[300],
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: const Text(
@@ -310,7 +301,6 @@ class _WalletState extends State<Wallet> {
                             ),
                           ],
                         ),
-                        // ปุ่มและตัวคูณ
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
@@ -395,12 +385,12 @@ class _WalletState extends State<Wallet> {
                     FilledButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(
-                            255, 118, 140, 254), // เปลี่ยนสีพื้นหลังของปุ่ม
+                        backgroundColor:
+                            const Color.fromARGB(255, 118, 140, 254),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8), // เพิ่ม padding
+                            horizontal: 16, vertical: 8),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8), // เพิ่มมุมมน
+                          borderRadius: BorderRadius.circular(8),
                         ),
                       ),
                       child: const Text(
@@ -413,7 +403,7 @@ class _WalletState extends State<Wallet> {
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           );
         },
