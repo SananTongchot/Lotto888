@@ -331,6 +331,65 @@ class _FindLottoPageState extends State<FindLottoPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => Wallet()));
+                                  // แสดง AlertDialog เพื่อยืนยันการซื้อลอตเตอรี
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text(
+                                          "ยืนยัน",
+                                          textAlign: TextAlign
+                                              .center, // จัดข้อความให้อยู่ตรงกลาง
+                                          style: TextStyle(
+                                            fontWeight: FontWeight
+                                                .bold, // ทำให้ตัวอักษรหนา
+                                            fontSize:
+                                                18, // ปรับขนาดตัวอักษรหากต้องการ
+                                          ),
+                                        ),
+                                        content: const Text(
+                                          "คุณจะซื้อลอตเตอรีนี้ใช่มั้ย?",
+                                          textAlign: TextAlign
+                                              .center, // จัดข้อความให้อยู่ตรงกลาง
+                                        ),
+                                        actions: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .center, // จัดให้อยู่ตรงกลาง
+                                            children: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(); // ปิด dialog เมื่อกด "ใช่"
+                                                },
+                                                child: const Text("ใช่"),
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor: Colors.white,
+                                                  backgroundColor:
+                                                      const Color(0xFF2445EF),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                  width:
+                                                      70), // ระยะห่างระหว่างปุ่ม
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(); // ปิด dialog เมื่อกด "ไม่"
+                                                },
+                                                child: const Text("ไม่"),
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor: Colors.white,
+                                                  backgroundColor:
+                                                      Color.fromARGB(255, 251, 61, 61),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
                                 },
                                 style: ElevatedButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(
