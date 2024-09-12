@@ -186,14 +186,13 @@ class _LoginpageState extends State<Loginpage> {
       ),
     );
   }
-
-  Future<void> login() async {
+Future<void> login() async {
   var config = await Configuration.getConfig();
   var url = config['apiEndpoint'];
 
   if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
     setState(() {
-      textResLogin = "Email or password incorrect";
+      textResLogin = "Email or password must not empty";
     });
   } else {
     log(_usernameController.text + _passwordController.text);
@@ -203,32 +202,33 @@ class _LoginpageState extends State<Loginpage> {
     };
     log(model.toString());
 
-    http
-        .post(Uri.parse("$url/login"),
-            headers: {"Content-Type": "application/json; charset=utf-8"},
-            body: jsonEncode(model))
-        .then((value) {
+    http.post(
+      Uri.parse("$url/login"),
+      headers: {"Content-Type": "application/json; charset=utf-8"},
+      body: jsonEncode(model),
+    ).then((value) {
       log(value.body);
       var responseData = jsonDecode(value.body);
 
-      // ดึงข้อความ, uid และ type จาก response
-      int uid = responseData['uid'];
-      String type = responseData['type'];
-      log(type);
+      // ตรวจสอบค่าของ uid และ type ก่อนใช้งาน
+      int uid = responseData['uid'] ?? 0;  // ให้ค่า default เป็น 0 หากไม่มีค่า
+      String type = responseData['type'] ?? "";  // ให้ค่า default เป็น "" หากไม่มีค่า
 
       // ตรวจสอบว่าเป็น Admin หรือ User โดยเช็คจากค่า type
       if (type == "1") {
-        // ถ้า type เป็น 1 นำไปหน้า CheckPrizeAdmin (Admin)
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => CheckPrizeAdmin(idx: uid)),
         );
       } else if (type == "2") {
-        // ถ้า type เป็น 2 นำไปหน้า FindLottoPage (User)
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => FindLottoPage(idx: uid)),
         );
+      } else {
+        setState(() {
+          textResLogin = "Email or password incorrect";
+        });
       }
     }).catchError((err) {
       setState(() {
@@ -237,5 +237,7 @@ class _LoginpageState extends State<Loginpage> {
     });
   }
 }
+
+
 
 }

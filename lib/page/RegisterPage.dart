@@ -239,60 +239,71 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  void Register() async {
-    if (_passwordController.text == _confirmPasswordController.text) {
-      if (_usernameController.text.isEmpty ||
-          _phoneController.text.isEmpty ||
-          _emailController.text.isEmpty ||
-          _passwordController.text.isEmpty ||
-          _confirmPasswordController.text.isEmpty) {
-        setState(() {
-          text = "Please enter complete information.";
-        });
-      } else {
-        var model = UserRegisterPostRequest(
-          username: _usernameController.text,
-          phone: _phoneController.text,
-          email: _emailController.text,
-          password: _passwordController.text,
-        );
-        log('Model: ${model.toString()}');
-        log('JSON: ${userRegisterPostRequestToJson(model)}');
-        try {
-          var response = await http.post(
-            Uri.parse("$url/register"),
-            headers: {"Content-Type": "application/json"},
-            body: userRegisterPostRequestToJson(model),
-          );
-
-          log(response.statusCode.toString());
-          log('Response: ${response.body}');
-
-          // ตรวจสอบว่า statusCode เป็น 201 (สร้างสำเร็จ)
-          if (response.statusCode == 201) {
-            log('Registration successful.');
-
-            // นำทางไปยังหน้า Login เมื่อการลงทะเบียนสำเร็จ
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const Loginpage(),
-              ),
-            );
-          } else {
-            // ถ้าสถานะไม่ใช่ 201 ให้แสดงข้อความข้อผิดพลาด
-            setState(() {
-              text = "Error:"+response.body;
-            });
-          }
-        } catch (e) {
-          // จัดการข้อผิดพลาดจากการเชื่อมต่อ
-          log('Error: ${e.toString()}');
-          setState(() {
-            text = "Error: Unable to connect to the server.";
-          });
-        }
-      }
-    }
+ void Register() async {
+  // ตรวจสอบว่ารหัสผ่านและรหัสยืนยันตรงกัน
+  if (_passwordController.text != _confirmPasswordController.text) {
+    setState(() {
+      text = "Passwords do not match.";
+    });
+    return;
   }
+
+  // ตรวจสอบว่ากรอกข้อมูลครบถ้วน
+  if (_usernameController.text.isEmpty ||
+      _phoneController.text.isEmpty ||
+      _emailController.text.isEmpty ||
+      _passwordController.text.isEmpty ||
+      _confirmPasswordController.text.isEmpty) {
+    setState(() {
+      text = "Please enter complete information.";
+    });
+    return;
+  }
+
+  var model = UserRegisterPostRequest(
+    username: _usernameController.text,
+    phone: _phoneController.text,
+    email: _emailController.text,
+    password: _passwordController.text,
+  );
+
+  log('Model: ${model.toString()}');
+  log('JSON: ${userRegisterPostRequestToJson(model)}');
+
+  try {
+    var response = await http.post(
+      Uri.parse("$url/register"),
+      headers: {"Content-Type": "application/json"},
+      body: userRegisterPostRequestToJson(model),
+    );
+
+    log(response.statusCode.toString());
+    log('Response: ${response.body}');
+
+    // ตรวจสอบว่า statusCode เป็น 201 (สร้างสำเร็จ)
+    if (response.statusCode == 201) {
+      log('Registration successful.');
+
+      // นำทางไปยังหน้า Login เมื่อการลงทะเบียนสำเร็จ
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Loginpage(),
+        ),
+      );
+    } else {
+      // ถ้าสถานะไม่ใช่ 201 ให้แสดงข้อความข้อผิดพลาด
+      setState(() {
+        text = "Error: ${response.body}";
+      });
+    }
+  } catch (e) {
+    // จัดการข้อผิดพลาดจากการเชื่อมต่อ
+    log('Error: ${e.toString()}');
+    setState(() {
+      text = "Error: Unable to connect to the server.";
+    });
+  }
+}
+
 }
