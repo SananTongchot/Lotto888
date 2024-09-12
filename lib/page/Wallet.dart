@@ -72,6 +72,7 @@ class _WalletState extends State<Wallet> {
       body: Consumer<CartProvider>(
         builder: (context, cartProvider, child) {
           final items = cartProvider.items;
+
           return Column(
             children: [
               SizedBox(
@@ -104,8 +105,7 @@ class _WalletState extends State<Wallet> {
                                     ),
                                   ),
                                   Text(
-                                    '฿'
-                                    '123456',
+                                    '฿' '132132',
                                     style: TextStyle(
                                       fontSize: 30,
                                       color: Colors.white,
@@ -124,6 +124,10 @@ class _WalletState extends State<Wallet> {
                   ),
                 ),
               ),
+              return ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final cartItem = items.values.toList()[index];
               SizedBox(
                 width: 360,
                 height: 103,
@@ -137,6 +141,7 @@ class _WalletState extends State<Wallet> {
                       color: Colors.lightBlue[50],
                       borderRadius: BorderRadius.circular(20),
                     ),
+                    
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -184,8 +189,8 @@ class _WalletState extends State<Wallet> {
                                 color: Colors.blue[300],
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: const Text(
-                                '13424532',
+                              child: Text(
+                                "${cartItem.LottoNmuber}",
                                 style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.white,
@@ -209,7 +214,7 @@ class _WalletState extends State<Wallet> {
                                 ),
                               ),
                               child: const Text(
-                                'เลือก',
+                                'ลบ',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 14,
@@ -221,7 +226,7 @@ class _WalletState extends State<Wallet> {
                               '100x',
                               style: TextStyle(
                                 fontSize: 14,
-                                color: Colors.black,
+                                color: Color.fromARGB(255, 255, 96, 96),
                               ),
                             ),
                           ],
@@ -234,109 +239,114 @@ class _WalletState extends State<Wallet> {
               SizedBox(
                 width: 360,
                 height: 103,
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.lightBlue[50],
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '80',
-                                  style: TextStyle(
-                                    fontSize: 30,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
+                child: ListView.builder(
+                    itemCount: items.length,
+                    itemBuilder: (context, index) {
+                      final cartItem = items.values.toList()[index];
+                      Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.lightBlue[50],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        '80',
+                                        style: TextStyle(
+                                          fontSize: 30,
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        'บาท',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                Text(
-                                  'บาท',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.red,
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    'สลากกินแบ่งรัฐบาล',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 5,
+                                      horizontal: 10,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue[300],
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: const Text(
+                                      '13424532',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 5,
+                                        horizontal: 15,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      'เลือก',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  const Text(
+                                    '100x',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'สลากกินแบ่งรัฐบาล',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 5,
-                                horizontal: 10,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.blue[300],
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Text(
-                                '13424532',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 5,
-                                  horizontal: 15,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                              child: const Text(
-                                'เลือก',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            const Text(
-                              '100x',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                      );
+                    }),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 190, 0, 0),
