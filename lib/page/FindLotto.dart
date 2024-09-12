@@ -325,7 +325,7 @@ class _FindLottoPageState extends State<FindLottoPage> {
                             children: [
                               ElevatedButton(
                                 onPressed: () {
-                                  cartProvider.addItem(lottery.lid,
+                                  cartProvider.addItem(lottery.lid.toString(),
                                       lottery.price, lottery.lottoNumber);
                                   Navigator.push(
                                       context,
@@ -418,7 +418,7 @@ class _FindLottoPageState extends State<FindLottoPage> {
 }
 
 class CartItem {
-  final int id;
+  final String id;
   final String LottoNmuber;
   final int quantity;
   final int price;
@@ -446,7 +446,7 @@ class CartProvider with ChangeNotifier {
     return total;
   }
 
-  void addItem(int productId, int price, String LottoNmuber) {
+  void addItem(String productId, int price, String LottoNmuber) {
     if (_items.containsKey(productId)) {
       _items.update(
         productId.toString(),

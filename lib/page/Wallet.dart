@@ -3,10 +3,6 @@ import 'package:flutter_application_1/page/FindLotto.dart';
 import 'package:provider/provider.dart';
 
 class Wallet extends StatefulWidget {
-  // final String userId; // เพิ่มตัวแปรสำหรับรับ userId
-
-  // const Wallet({super.key, required this.userId});
-
   @override
   State<Wallet> createState() => _WalletState();
 }
@@ -17,7 +13,7 @@ class _WalletState extends State<Wallet> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: Colors.white, // กำหนดให้ไอคอนเป็นสีขาว
+          color: Colors.white,
         ),
         title: const Text("Wallet"),
         centerTitle: true,
@@ -29,9 +25,9 @@ class _WalletState extends State<Wallet> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.person), // ไอคอนรูปคน
+            icon: const Icon(Icons.person),
             onPressed: () {
-              // การทำงานเมื่อกดไอคอนรูปคน
+              // Action for the person icon
             },
           ),
         ],
@@ -56,14 +52,14 @@ class _WalletState extends State<Wallet> {
               leading: const Icon(Icons.home),
               title: const Text('Home'),
               onTap: () {
-                // การทำงานเมื่อเลือกเมนู
+                // Action for Home
               },
             ),
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Settings'),
               onTap: () {
-                // การทำงานเมื่อเลือกเมนู
+                // Action for Settings
               },
             ),
           ],
@@ -97,7 +93,7 @@ class _WalletState extends State<Wallet> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Blance',
+                                    'Balance',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 12,
@@ -105,7 +101,7 @@ class _WalletState extends State<Wallet> {
                                     ),
                                   ),
                                   Text(
-                                    '฿' '132132',
+                                    '฿132132',
                                     style: TextStyle(
                                       fontSize: 30,
                                       color: Colors.white,
@@ -124,126 +120,16 @@ class _WalletState extends State<Wallet> {
                   ),
                 ),
               ),
-              return ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context, index) {
-              final cartItem = items.values.toList()[index];
-              SizedBox(
-                width: 360,
-                height: 103,
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.lightBlue[50],
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '80',
-                                  style: TextStyle(
-                                    fontSize: 30,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  'บาท',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'สลากกินแบ่งรัฐบาล',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 5,
-                                horizontal: 10,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.blue[300],
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                "${cartItem.LottoNmuber}",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 5,
-                                  horizontal: 15,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                              child: const Text(
-                                'ลบ',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            const Text(
-                              '100x',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Color.fromARGB(255, 255, 96, 96),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 360,
-                height: 103,
+              // Use Flexible or Expanded to fit the ListView inside the Column
+              Expanded(
                 child: ListView.builder(
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
-                      final cartItem = items.values.toList()[index];
-                      Card(
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    final cartItem = items.values.toList()[index];
+                    return SizedBox(
+                      width: 360,
+                      height: 103,
+                      child: Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -300,8 +186,8 @@ class _WalletState extends State<Wallet> {
                                       color: Colors.blue[300],
                                       borderRadius: BorderRadius.circular(10),
                                     ),
-                                    child: const Text(
-                                      '13424532',
+                                    child: Text(
+                                      "${cartItem.LottoNmuber}",
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: Colors.white,
@@ -314,7 +200,29 @@ class _WalletState extends State<Wallet> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      // cartProvider
+                                      //     .removeItem(cartItem.id.toString());
+                                      try {
+                                        cartProvider
+                                            .removeItem(cartItem.id.toString());
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'Item quantity updated or removed'),
+                                          ),
+                                        );
+                                      } catch (e) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'Failed to update item: ${e.toString()}'),
+                                          ),
+                                        );
+                                      }
+                                    },
                                     style: ElevatedButton.styleFrom(
                                       padding: const EdgeInsets.symmetric(
                                         vertical: 5,
@@ -325,7 +233,7 @@ class _WalletState extends State<Wallet> {
                                       ),
                                     ),
                                     child: const Text(
-                                      'เลือก',
+                                      'ลบ',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 14,
@@ -333,11 +241,11 @@ class _WalletState extends State<Wallet> {
                                     ),
                                   ),
                                   const SizedBox(height: 5),
-                                  const Text(
-                                    '100x',
+                                  Text(
+                                    "${cartItem.quantity}" 'x',
                                     style: TextStyle(
                                       fontSize: 14,
-                                      color: Colors.black,
+                                      color: Color.fromARGB(255, 255, 96, 96),
                                     ),
                                   ),
                                 ],
@@ -345,9 +253,12 @@ class _WalletState extends State<Wallet> {
                             ],
                           ),
                         ),
-                      );
-                    }),
+                      ),
+                    );
+                  },
+                ),
               ),
+
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 190, 0, 0),
                 child: Row(
