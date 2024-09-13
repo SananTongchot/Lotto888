@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Lotto888',
       home: FindLottoPage(
-        idx: 0,
+        idx: 2,
       ),
     );
   }
