@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/page/EditProfileUser.dart';
 import 'package:flutter_application_1/page/FindLotto.dart';
+import 'package:flutter_application_1/page/ProfileUser.dart';
 import 'package:flutter_application_1/page/Wallet.dart';
 
 class Checkprizepage extends StatefulWidget {
@@ -290,7 +291,7 @@ class CheckprizeState extends State<Checkprizepage> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Editprofileuser(idx: widget.idx),
+            builder: (context) => Profileuser(idx: widget.idx),
           ));
     }
   }
