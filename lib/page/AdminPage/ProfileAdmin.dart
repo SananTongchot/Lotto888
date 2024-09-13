@@ -1,4 +1,7 @@
+import 'dart:developer';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/config/config.dart';
 import 'package:flutter_application_1/page/AdminPage/EditProfileAdmin.dart';
 
 class Profileadmin extends StatefulWidget {
@@ -9,7 +12,48 @@ class Profileadmin extends StatefulWidget {
 }
 
 class _ProfileadminState extends State<Profileadmin> {
+  String url = '';
+  
   @override
+    void initState() {
+    super.initState();
+    Configuration.getConfig().then((config) {
+      setState(() {
+        url = config['apiEndpoint'];
+      });
+    });
+  }
+ Future<void> ResetSystem() async {
+  if (url.isEmpty) {
+    log("API URL is not set.");
+    return;
+  }
+  try {
+    final response = await http.delete(
+      Uri.parse("$url/reset"),
+      headers: {"Content-Type": "application/json; charset=utf-8"},
+    );
+    
+    if (response.statusCode == 200) {
+      // แสดงข้อความแจ้งว่ารีเซ็ตสำเร็จ
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('รีเซ็ตระบบสำเร็จ')),
+      );
+    } else {
+      // แสดงข้อความแจ้งข้อผิดพลาด
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('เกิดข้อผิดพลาด: ${response.statusCode}')),
+      );
+    }
+  } catch (e) {
+    log("Error during reset: $e");
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('การเชื่อมต่อ API ล้มเหลว')),
+    );
+  }
+}
+
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -164,32 +208,31 @@ class _ProfileadminState extends State<Profileadmin> {
                     ),
                   ),
                   const Spacer(), // เพิ่ม Spacer ที่นี่เพื่อดันปุ่มสุดท้ายไปอยู่ด้านล่าง
-                  SizedBox(
-                    width: 250, // กำหนดความกว้างของปุ่ม
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // ใส่ฟังก์ชันที่ต้องการเมื่อกดปุ่ม "รีเซ็ตระบบทั้งหมด"
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(
-                            255, 255, 255, 255), // สีพื้นหลังของปุ่ม
-                        padding: const EdgeInsets.symmetric(
-                            vertical:
-                                10), // ขนาดของปุ่ม (ไม่มี horizontal padding)
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(5), // ขอบปุ่มโค้งมน
-                        ),
-                      ),
-                      child: const Text(
-                        'รีเซ็ตระบบทั้งหมด',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0),
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ),
+                 SizedBox(
+  width: 250, // กำหนดความกว้างของปุ่ม
+  child: ElevatedButton(
+    onPressed: () {
+      ResetSystem(); // เรียกฟังก์ชันรีเซ็ตเมื่อกดปุ่ม
+    },
+    style: ElevatedButton.styleFrom(
+      backgroundColor: const Color.fromARGB(
+          255, 255, 255, 255), // สีพื้นหลังของปุ่ม
+      padding: const EdgeInsets.symmetric(
+          vertical: 10), // ขนาดของปุ่ม (ไม่มี horizontal padding)
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5), // ขอบปุ่มโค้งมน
+      ),
+    ),
+    child: const Text(
+      'รีเซ็ตระบบทั้งหมด',
+      style: TextStyle(
+        color: Color.fromARGB(255, 0, 0, 0),
+        fontSize: 16,
+      ),
+    ),
+  ),
+)
+
                 ],
               ),
             ),
