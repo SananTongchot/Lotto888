@@ -1,9 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/config/config.dart';
 import 'package:flutter_application_1/model/response/LotteryGetResponse.dart';
+import 'package:flutter_application_1/model/response/UserGetCheckPrizeResponse.dart';
+import 'package:flutter_application_1/model/response/UserGetCreditResponse.dart';
+import 'package:flutter_application_1/model/response/UserGetRewardsResponse.dart';
 import 'package:flutter_application_1/page/EditProfileUser.dart';
 import 'package:flutter_application_1/page/FindLotto.dart';
 import 'package:flutter_application_1/page/ProfileUser.dart';
@@ -13,14 +17,14 @@ import 'package:http/http.dart' as http;
 class Checkprizepage extends StatefulWidget {
   int idx = 0;
   Checkprizepage({super.key, required this.idx});
-
   @override
   State<Checkprizepage> createState() => CheckprizeState();
 }
 
 class CheckprizeState extends State<Checkprizepage> {
-  List<LotteryGetResponse> lotteries = [];
   String url = '';
+  List<UserGetCheckPrizeResponse> lotteries = [];
+  late UserGetRewardsResponse rewards;
   @override
   void initState() {
     // TODO: implement initState
@@ -32,6 +36,8 @@ class CheckprizeState extends State<Checkprizepage> {
       });
     });
   }
+
+  bool isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -172,10 +178,91 @@ class CheckprizeState extends State<Checkprizepage> {
               ),
             ),
           ),
-          Expanded(
-            child: ListView(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FilledButton(
+                onPressed: () {
+                  setState(() {
+                    isChecked = true; // เมื่อกดปุ่มจะเปลี่ยนเป็น true
+                    getWin_Lotto(); // เรียกใช้ฟังก์ชันตรวจรางวัล
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 89, 117, 255),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: const Text(
+                  'ตรวจรางวัล',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
               SizedBox(
-                child: Padding(
+                width: 50,
+              ),
+              FilledButton(
+                onPressed: () {
+                  reward();
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text(
+                          "${rewards.message}",
+                          textAlign:
+                              TextAlign.center, // จัดข้อความให้อยู่ตรงกลาง
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold, // ทำให้ตัวอักษรหนา
+                            fontSize: 18, // ปรับขนาดตัวอักษรหากต้องการ
+                          ),
+                        ),
+                        content: Text(
+                          "${rewards.totalPrizeAmount}",
+                          textAlign:
+                              TextAlign.center, // จัดข้อความให้อยู่ตรงกลาง
+                        ),
+                        actions: [],
+                      );
+                    },
+                  );
+                  // Action for payment
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 118, 140, 254),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: const Text(
+                  'ขึ้นเงินรางวัล',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: lotteries.length, // ใช้จำนวนรายการจาก lotteries
+              itemBuilder: (context, index) {
+                final lottery =
+                    lotteries[index]; // ข้อมูลลอตเตอรี่ที่ดึงมาจากแต่ละ index
+
+                // ตรวจสอบว่าถูกรางวัลหรือไม่
+                bool isWinner = lottery.win == true;
+
+                return Padding(
                   padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                   child: Container(
                     color: Colors.white,
@@ -189,7 +276,12 @@ class CheckprizeState extends State<Checkprizepage> {
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Colors.lightBlue[50],
+                            // แสดงสีตามเงื่อนไข: ถ้ากดปุ่มแล้ว และถูกรางวัลจะแสดงสีเขียว ถ้าไม่ถูกรางวัลจะแสดงสีแดง
+                            color: isChecked
+                                ? (isWinner
+                                    ? Colors.green[100]
+                                    : Colors.red[100])
+                                : Colors.grey[200], // ยังไม่กดปุ่มให้แสดงสีเทา
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Row(
@@ -203,9 +295,10 @@ class CheckprizeState extends State<Checkprizepage> {
                                   color: Colors.blue[300],
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: const Text(
-                                  '567546',
-                                  style: TextStyle(
+                                child: Text(
+                                  lottery
+                                      .lottoNumber, // ใช้ข้อมูลจาก lottery.number
+                                  style: const TextStyle(
                                     fontSize: 30,
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -213,21 +306,26 @@ class CheckprizeState extends State<Checkprizepage> {
                                 ),
                               ),
                               // Text Column
-                              const Column(
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'ยินดีด้วย',
+                                  const Text(
+                                    'ผลการตรวจ',
                                     style: TextStyle(
                                       fontSize: 18,
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  SizedBox(height: 5),
+                                  const SizedBox(height: 5),
+                                  // แสดงข้อความตามเงื่อนไข
                                   Text(
-                                    'คุณถูกรางวัลที่ 4',
-                                    style: TextStyle(
+                                    isChecked
+                                        ? (isWinner
+                                            ? 'คุณถูก${lottery.prizeRank}' // ข้อมูลรางวัลที่ดึงจาก lottery
+                                            : 'คุณไม่ถูกรางวัล') // ข้อความเมื่อไม่ถูกรางวัล
+                                        : 'ยังไม่ได้ตรวจรางวัล', // ข้อความเริ่มต้นเมื่อยังไม่กดปุ่ม
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       color: Colors.black,
                                     ),
@@ -235,17 +333,18 @@ class CheckprizeState extends State<Checkprizepage> {
                                 ],
                               ),
                               // Multiplier and Amount
-                              const Column(
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Text(
-                                    '4000 ฿',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
+                                  if (isWinner && isChecked)
+                                    Text(
+                                      '${lottery.prizeAmount} ฿', // ข้อมูลจำนวนเงินที่ดึงจาก lottery
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
                                 ],
                               ),
                             ],
@@ -254,9 +353,9 @@ class CheckprizeState extends State<Checkprizepage> {
                       ),
                     ),
                   ),
-                ),
-              ),
-            ]),
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -285,7 +384,6 @@ class CheckprizeState extends State<Checkprizepage> {
         ],
         onTap: (index) {
           tapbarNavigator(index);
-          // Actions when an item is selected
         },
       ),
     );
@@ -324,16 +422,44 @@ class CheckprizeState extends State<Checkprizepage> {
     try {
       var model = {"uid": widget.idx};
       final response = await http.post(
-        Uri.parse("$url/lotto_buy_finish"),
+        Uri.parse("$url/lotto_buy_finish2"),
         headers: {"Content-Type": "application/json; charset=utf-8"},
         body: jsonEncode(model),
       );
       log("uid" + widget.idx.toString());
       log(response.body);
+      lotteries = userGetCheckPrizeResponseFromJson(response.body);
 
       if (response.statusCode == 200) {
         setState(() {
-          lotteries = lotteryGetResponseFromJson(response.body);
+          rewards = userGetRewardsResponseFromJson(response.body);
+
+          // resetControllers(); // Reset controllers after fetching data
+        });
+      } else {
+        log('Failed to load lotto data: ${response.statusCode}');
+      }
+    } catch (e) {
+      log('Error occurred while fetching lotto data: $e');
+    }
+  }
+
+  void reward() async {
+    try {
+      var model = {"uid": widget.idx};
+      final response = await http.post(
+        Uri.parse("$url/reward"),
+        headers: {"Content-Type": "application/json; charset=utf-8"},
+        body: jsonEncode(model),
+      );
+      log("uid" + widget.idx.toString());
+      log(response.body);
+      rewards = userGetRewardsResponseFromJson(response.body);
+
+      if (response.statusCode == 200) {
+        setState(() {
+          rewards = userGetRewardsResponseFromJson(response.body);
+
           // resetControllers(); // Reset controllers after fetching data
         });
       } else {

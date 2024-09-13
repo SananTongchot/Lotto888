@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/config/config.dart';
 import 'package:flutter_application_1/model/response/LotteryGetResponse.dart';
+import 'package:flutter_application_1/model/response/UserGetCheckPrizeResponse.dart';
 import 'package:flutter_application_1/page/AdminPage/ProfileAdmin.dart';
 import 'package:flutter_application_1/page/AdminPage/Random.dart';
 import 'package:http/http.dart' as http; // ใช้สำหรับเรียกใช้งาน HTTP
