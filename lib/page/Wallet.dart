@@ -13,7 +13,6 @@ import 'package:http/http.dart' as http;
 
 class Wallet extends StatefulWidget {
   int idx = 0;
-
   Wallet({super.key, required this.idx});
   @override
   State<Wallet> createState() => _WalletState();
