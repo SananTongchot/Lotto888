@@ -8,6 +8,7 @@ import 'package:flutter_application_1/config/config.dart';
 import 'package:flutter_application_1/page/CheckPrize.dart';
 import 'package:flutter_application_1/page/EditProfileUser.dart';
 import 'package:flutter_application_1/page/FindLotto.dart';
+import 'package:flutter_application_1/page/ProfileUser.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -392,7 +393,7 @@ class _WalletState extends State<Wallet> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Editprofileuser(idx: widget.idx),
+            builder: (context) => Profileuser(idx: widget.idx),
           ));
     }
   }
