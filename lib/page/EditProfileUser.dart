@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Editprofileuser extends StatefulWidget {
-  int idx = 0;
-  Editprofileuser({super.key, required this.idx});
+  const Editprofileuser({super.key});
 
   @override
   State<Editprofileuser> createState() => _EditprofileuserState();

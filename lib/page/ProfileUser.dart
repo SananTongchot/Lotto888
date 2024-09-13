@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/page/EditProfileUser.dart';
 
 class Profileuser extends StatefulWidget {
-  int idx = 0;
-  Profileuser({super.key, required this.idx});
+  const Profileuser({super.key});
 
   @override
   State<Profileuser> createState() => _ProfileuserState();
@@ -86,9 +85,7 @@ class _ProfileuserState extends State<Profileuser> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Editprofileuser(
-                                    idx: widget.idx,
-                                  )),
+                              builder: (context) => const Editprofileuser()),
                         );
                         // ใส่ฟังก์ชันที่ต้องการเมื่อกดปุ่ม "แก้ไขข้อมูล"
                       },
@@ -201,7 +198,4 @@ class _ProfileuserState extends State<Profileuser> {
       ),
     );
   }
-  
-  
 }
-

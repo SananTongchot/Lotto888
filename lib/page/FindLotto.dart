@@ -2,8 +2,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/config/config.dart';
 import 'package:flutter_application_1/model/response/LotteryGetResponse.dart';
-import 'package:flutter_application_1/page/CheckPrize.dart';
-import 'package:flutter_application_1/page/EditProfileUser.dart';
 import 'package:flutter_application_1/page/Wallet.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -20,6 +18,7 @@ class FindLottoPage extends StatefulWidget {
 }
 
 class _FindLottoPageState extends State<FindLottoPage> {
+
   String url = '';
   List<LotteryGetResponse> lotteries = [];
 
@@ -359,14 +358,13 @@ class _FindLottoPageState extends State<FindLottoPage> {
                                                       lottery.lid.toString(),
                                                       lottery.price,
                                                       lottery.lottoNumber);
-                                                  Navigator.of(context).pop();
-                                                  // Navigator.push(
-                                                  //     context,
-                                                  //     MaterialPageRoute(
-                                                  //         builder: (context) =>
-                                                  //             Wallet(
-                                                  //               idx: widget.idx,
-                                                  //             ))); // ปิด dialog เมื่อกด "ใช่"
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              Wallet(
+                                                                idx: idx,
+                                                              ))); // ปิด dialog เมื่อกด "ใช่"
                                                 },
                                                 child: const Text("ใช่"),
                                                 style: TextButton.styleFrom(
@@ -450,35 +448,10 @@ class _FindLottoPageState extends State<FindLottoPage> {
           ),
         ],
         onTap: (index) {
-          tapbarNavigator(index);
           // Actions when an item is selected
         },
       ),
     );
-  }
-
-  void tapbarNavigator(int index) {
-    log(index.toString());
-    if (index == 0) {
-    } else if (index == 1) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Wallet(idx: widget.idx),
-          ));
-    } else if (index == 2) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Checkprizepage(idx: widget.idx),
-          ));
-    } else if (index == 3) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Editprofileuser(idx: widget.idx),
-          ));
-    }
   }
 
   void getnum() {
@@ -602,11 +575,5 @@ class CartProvider with ChangeNotifier {
       log('Failed to remove item: ${e.toString()}');
       throw Exception('Failed to remove item: ${e.toString()}');
     }
-  }
-
-  // ฟังก์ชันสำหรับล้างข้อมูลทั้งหมดในตะกร้า
-  void clearCart() {
-    _items = {}; // กำหนดตะกร้าใหม่ให้เป็นค่าว่าง
-    notifyListeners(); // แจ้งให้ UI อัพเดต
   }
 }

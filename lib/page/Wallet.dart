@@ -5,16 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/config/config.dart';
-import 'package:flutter_application_1/page/CheckPrize.dart';
-import 'package:flutter_application_1/page/EditProfileUser.dart';
 import 'package:flutter_application_1/page/FindLotto.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 class Wallet extends StatefulWidget {
   int idx = 0;
-
-  Wallet({super.key, required this.idx});
+ Wallet({super.key, required this.idx});
   @override
   State<Wallet> createState() => _WalletState();
 }
@@ -22,7 +19,7 @@ class Wallet extends StatefulWidget {
 class _WalletState extends State<Wallet> {
   int count = 0; // จำนวนสินค้า
   int countPrice = 0; // ราคารวมสินค้า
-  int credit = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,7 +142,6 @@ class _WalletState extends State<Wallet> {
               ),
               // Use Flexible or Expanded to fit the ListView inside the Column
               Expanded(
-                // flex: 2,
                 child: ListView.builder(
                   itemCount: items.length,
                   itemBuilder: (context, index) {
@@ -212,7 +208,7 @@ class _WalletState extends State<Wallet> {
                                     ),
                                     child: Text(
                                       "${cartItem.LottoNmuber}",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 20,
                                         color: Colors.white,
                                       ),
@@ -265,7 +261,7 @@ class _WalletState extends State<Wallet> {
               ),
               // แสดงจำนวนและราคารวม
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                padding: const EdgeInsets.fromLTRB(0, 190, 0, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -310,7 +306,7 @@ class _WalletState extends State<Wallet> {
                     ),
                     FilledButton(
                       onPressed: () {
-                        payLottetry(context);
+                        payLottetry();
                         // Action for payment
                       },
                       style: ElevatedButton.styleFrom(
@@ -361,77 +357,30 @@ class _WalletState extends State<Wallet> {
           ),
         ],
         onTap: (index) {
-          tapbarNavigator(index);
-
           // Actions when an item is selected
         },
       ),
     );
   }
 
-  void tapbarNavigator(int index) {
-    log(index.toString());
-    if (index == 0) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => FindLottoPage(idx: widget.idx),
-          ));
-    } else if (index == 1) {
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => Wallet(idx: widget.idx),
-      //     ));
-    } else if (index == 2) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Checkprizepage(idx: widget.idx),
-          ));
-    } else if (index == 3) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Editprofileuser(idx: widget.idx),
-          ));
-    }
-  }
-
-  void payLottetry(bu) async {
-    final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    log("Pay");
-
-    // ดึงข้อมูลจาก CartProvider
-    List<int> lids = cartProvider.items.values
-        .map((cartItem) => int.parse(cartItem.id))
-        .toList(); // แปลง id จาก String เป็น int
-
+  void payLottetry() async {
+    
     var config = await Configuration.getConfig();
     var url = config['apiEndpoint'];
-
-    // สร้างโมเดลข้อมูลที่จะส่งไปใน API
     var model = {
-      "uid": widget.idx, // ดึง uid จาก widget ที่ส่งเข้ามา
-      "lids": lids, // ส่ง list ของ id ในรูปแบบ List ไม่ใช่ String
+      "uid": idx,
+      "lids": ['','',''],
+
     };
-
-    log(model.toString());
-
-    // ส่งข้อมูลผ่าน HTTP POST request
     http
-        .post(
-      Uri.parse("$url/buy_lottery"),
-      headers: {"Content-Type": "application/json; charset=utf-8"},
-      body: jsonEncode(model),
-    )
+        .post(Uri.parse("$url/buy_lottery"),
+            headers: {"Content-Type": "application/json; charset=utf-8"},
+            body: jsonEncode(model))
         .then((value) {
-      // เมื่อส่งข้อมูลสำเร็จ ล้างตะกร้า
-      cartProvider.clearCart(); // เรียกใช้ฟังก์ชัน clearCart เพื่อล้างข้อมูล
-      log("pay2");
       log(value.body);
+      // Navigator.push(context,
+      //     MaterialPageRoute(builder: (context) => FindLottoPage(idx: uid)));
     }).catchError((err) {
-      log("Error: $err");
       setState(() {});
     });
   }
