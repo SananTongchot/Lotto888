@@ -39,9 +39,9 @@ class _LoginpageState extends State<Loginpage> {
     final isLandscape = mediaQuery.orientation == Orientation.landscape;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Login Page"),
-      ),
+      // appBar: AppBar(
+      //   title: const Text("Login Page"),
+      // ),
       backgroundColor: const Color(0xFF7EDDE5),
       body: Center(
         child: SingleChildScrollView(
