@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/page/AdminPage/ChckPrizeAdmin.dart';
+import 'package:flutter_application_1/page/AdminPage/Random.dart';
 import 'package:flutter_application_1/page/FindLotto.dart';
 import 'package:flutter_application_1/page/Wallet.dart';
 import 'RegisterPage.dart';
@@ -218,7 +219,7 @@ Future<void> login() async {
       if (type == "1") {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CheckPrizeAdmin(idx: uid)),
+          MaterialPageRoute(builder: (context) => RandomPage(idx: uid)),
         );
       } else if (type == "2") {
         Navigator.push(
