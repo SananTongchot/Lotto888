@@ -171,6 +171,9 @@ class _ProfileuserState extends State<Profileuser> {
                     width: 250, // กำหนดความกว้างของปุ่ม
                     child: ElevatedButton(
                       onPressed: () {
+                        Navigator.of(context).popUntil(
+                          (route) => route.isFirst,
+                        );
                         // ใส่ฟังก์ชันที่ต้องการเมื่อกดปุ่ม "ออกจากระบบ"
                       },
                       style: ElevatedButton.styleFrom(
@@ -201,7 +204,4 @@ class _ProfileuserState extends State<Profileuser> {
       ),
     );
   }
-  
-  
 }
-

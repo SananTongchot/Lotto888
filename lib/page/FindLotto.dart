@@ -4,6 +4,7 @@ import 'package:flutter_application_1/config/config.dart';
 import 'package:flutter_application_1/model/response/LotteryGetResponse.dart';
 import 'package:flutter_application_1/page/CheckPrize.dart';
 import 'package:flutter_application_1/page/EditProfileUser.dart';
+import 'package:flutter_application_1/page/ProfileUser.dart';
 import 'package:flutter_application_1/page/Wallet.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -476,7 +477,7 @@ class _FindLottoPageState extends State<FindLottoPage> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Editprofileuser(idx: widget.idx),
+            builder: (context) => Profileuser(idx: widget.idx),
           ));
     }
   }
