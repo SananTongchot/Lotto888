@@ -3,11 +3,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/config/config.dart';
+import 'package:flutter_application_1/model/response/LotteryGetResponse.dart';
+import 'package:flutter_application_1/page/AdminPage/ChckPrizeAdmin.dart';
+import 'package:flutter_application_1/page/AdminPage/ProfileAdmin.dart';
 import 'package:http/http.dart' as http; // ใช้สำหรับเรียกใช้งาน HTTP
 import 'dart:convert'; // ใช้สำหรับจัดการกับ JSON
 
 class RandomPage extends StatefulWidget {
-  int idx;
+  final int idx;
   RandomPage({super.key, required this.idx});
 
   @override
@@ -15,6 +18,11 @@ class RandomPage extends StatefulWidget {
 }
 
 class _RandomPageState extends State<RandomPage> {
+  List<LotteryGetResponse> lotteries = [];
+  int lastFilledIndex = -1;
+  List<TextEditingController> numControllers =
+      List.generate(6, (index) => TextEditingController());
+  List<FocusNode> focusNodes = List.generate(6, (index) => FocusNode());
   String url = ""; // ตัวแปรสำหรับเก็บ URL
   List<String> prizes = []; // ตัวแปรสำหรับเก็บรางวัล
 
@@ -90,80 +98,129 @@ class _RandomPageState extends State<RandomPage> {
         children: [
           Expanded(
             flex: 2,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
-              ),
-              child: Container(
-                color: const Color(0xFF2445EF),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      const Text(
-                        'รางวัลที่ 1',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const Text(
-                        '123456',
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Expanded(
-                        child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 3.0,
-                            mainAxisSpacing: 16.0,
-                            childAspectRatio: 2.0,
-                          ),
-                          itemCount: prizes.length, // จำนวนการ์ด
-                          itemBuilder: (context, index) {
-                            return Card(
-                              elevation: 5,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(30),
-                                  bottom: Radius.circular(20),
-                                ),
-                              ),
-                              child: Center(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'รางวัลที่ ${index + 1}',
-                                      style: const TextStyle(fontSize: 16),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      prizes.isNotEmpty
-                                          ? prizes[index]
-                                          : 'ไม่มีข้อมูล',
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
+            child: SizedBox(
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(30),
+                  bottomRight: Radius.circular(30),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white, // สีพื้นหลังของ Container
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black, // สีของเงาที่เบาลง
+                        spreadRadius: 1, // ขยายรัศมีของเงา
+                        blurRadius: 8, // ความเบลอของเงาที่มากขึ้น
+                        offset: Offset(0, 4), // การเลื่อนของเงา
                       ),
                     ],
+                  ),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ListView.builder(
+                          itemCount: lotteries.length,
+                          itemBuilder: (context, index) {
+                            final lottery = lotteries[index];
+                            return SizedBox(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // Price section
+                                  const Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            '80',
+                                            style: TextStyle(
+                                              fontSize: 30,
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            'บาท',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  // Lottery number section
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        'สลากกินแบ่งรัฐบาล',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 5, horizontal: 10),
+                                        decoration: BoxDecoration(
+                                          color: Colors.blue[300],
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Text(
+                                          // lottery.lottoNumber,
+                                          "554698",
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  // Button and multiplier
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          // แสดง AlertDialog เพื่อยืนยันการซื้อลอตเตอรี
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 5, horizontal: 15),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          backgroundColor: Colors.white,
+                                        ),
+                                        child: const Text(
+                                          'เลือก',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                            // ];
+                          }),
+                    ),
                   ),
                 ),
               ),
@@ -220,10 +277,64 @@ class _RandomPageState extends State<RandomPage> {
           ),
         ],
         onTap: (index) {
+          tapbarNavigator(index);
           // Actions when an item is selected
         },
       ),
     );
+  }
+
+  void tapbarNavigator(int index) {
+    log(index.toString());
+    if (index == 0) {
+    } else if (index == 1) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CheckPrizeAdmin(idx: widget.idx),
+          ));
+    } else if (index == 2) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Profileadmin(idx: widget.idx),
+          ));
+    }
+  }
+
+  Future<void> getLotto() async {
+    if (url.isEmpty) {
+      log("API URL is not set.");
+      return;
+    }
+
+    try {
+      final response = await http.get(
+        Uri.parse("$url/get_lotto_for_buy"),
+        headers: {"Content-Type": "application/json; charset=utf-8"},
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          lotteries = lotteryGetResponseFromJson(response.body);
+          resetControllers(); // Reset controllers after fetching data
+        });
+      } else {
+        log('Failed to load lotto data: ${response.statusCode}');
+      }
+    } catch (e) {
+      log('Error occurred while fetching lotto data: $e');
+    }
+  }
+
+  void resetControllers() {
+    for (var controller in numControllers) {
+      controller.clear(); // Clear text in each controller
+    }
+    lastFilledIndex = -1; // Reset the index of last filled TextField
+    for (var node in focusNodes) {
+      node.unfocus(); // Unfocus any focus nodes
+    }
   }
 
   Future<void> _fetchRandomPrizes() async {

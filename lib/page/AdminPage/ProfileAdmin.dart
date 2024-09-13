@@ -5,7 +5,8 @@ import 'package:flutter_application_1/config/config.dart';
 import 'package:flutter_application_1/page/AdminPage/EditProfileAdmin.dart';
 
 class Profileadmin extends StatefulWidget {
-  const Profileadmin({super.key});
+  final int idx;
+  const Profileadmin({super.key, required this.idx});
 
   @override
   State<Profileadmin> createState() => _ProfileadminState();
@@ -126,7 +127,7 @@ class _ProfileadminState extends State<Profileadmin> {
                     width: 250, // กำหนดความกว้างของปุ่ม
                     child: ElevatedButton(
                       onPressed: () {
-                          Navigator.push(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const Editprofileadmin()),

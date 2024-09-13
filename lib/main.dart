@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/page/AdminPage/Random.dart';
 // import 'package:flutter_application_1/page/AdminPage/EditProfileAdmin.dart';
 // import 'package:flutter_application_1/page/EditProfileUser.dart';
 // import 'package:flutter_application_1/page/ProfileUser.dart';
@@ -28,6 +29,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(title: 'Lotto888', home: Loginpage());
+    return MaterialApp(title: 'Lotto888', home: RandomPage(idx: 2));
   }
 }
