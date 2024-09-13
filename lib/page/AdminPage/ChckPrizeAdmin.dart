@@ -1,6 +1,9 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/config/config.dart';
+import 'package:flutter_application_1/model/response/LotteryGetResponse.dart';
+import 'package:flutter_application_1/model/response/UserGetCheckPrizeResponse.dart';
+
 import 'package:flutter_application_1/model/response/Get_5_WinResponse.dart';
 import 'package:flutter_application_1/page/AdminPage/ProfileAdmin.dart';
 import 'package:http/http.dart' as http;
