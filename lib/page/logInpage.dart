@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/page/AdminPage/ChckPrizeAdmin.dart';
 import 'package:flutter_application_1/page/FindLotto.dart';
 import 'package:flutter_application_1/page/Wallet.dart';
 import 'RegisterPage.dart';
@@ -185,51 +186,58 @@ class _LoginpageState extends State<Loginpage> {
       ),
     );
   }
+Future<void> login() async {
+  var config = await Configuration.getConfig();
+  var url = config['apiEndpoint'];
 
-  Future<void> login() async {
-    var config = await Configuration.getConfig();
-    var url = config['apiEndpoint'];
+  if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
+    setState(() {
+      textResLogin = "Email or password must not empty";
+    });
+  } else {
+    log(_usernameController.text + _passwordController.text);
+    var model = {
+      "email": _usernameController.text,
+      "password": _passwordController.text
+    };
+    log(model.toString());
 
-    if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
-      setState(() {
-        textResLogin = "Email or password incorrect";
-      });
-    } else {
-      log(_usernameController.text + _passwordController.text);
-      var model = {
-        "email": _usernameController.text,
-        "password": _passwordController.text
-      };
-      log(model.toString());
+    http.post(
+      Uri.parse("$url/login"),
+      headers: {"Content-Type": "application/json; charset=utf-8"},
+      body: jsonEncode(model),
+    ).then((value) {
+      log(value.body);
+      var responseData = jsonDecode(value.body);
 
-      // http.get(Uri.parse("$url")).then((value) {
-      //   log(value.body);
-      // }).catchError((onError) {
-      //   log(onError.toString());
-      //   log("123");
-      // });
+      // ตรวจสอบค่าของ uid และ type ก่อนใช้งาน
+      int uid = responseData['uid'] ?? 0;  // ให้ค่า default เป็น 0 หากไม่มีค่า
+      String type = responseData['type'] ?? "";  // ให้ค่า default เป็น "" หากไม่มีค่า
 
-      http
-          .post(Uri.parse("$url/login"),
-              headers: {"Content-Type": "application/json; charset=utf-8"},
-              body: jsonEncode(model))
-          .then((value) {
-        log(value.body);
-        // var user = userPostLoginResponseFromJson(value.body);
-        var responseData = jsonDecode(value.body);
-
-        // ดึงข้อความและ uid จาก response
-        // String message = responseData['message'];
-        int uid = responseData['uid'];
-
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => FindLottoPage(idx: uid)));
-      }).catchError((err) {
+      // ตรวจสอบว่าเป็น Admin หรือ User โดยเช็คจากค่า type
+      if (type == "1") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CheckPrizeAdmin(idx: uid)),
+        );
+      } else if (type == "2") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FindLottoPage(idx: uid)),
+        );
+      } else {
         setState(() {
-          textResLogin = err.toString();
+          textResLogin = "Email or password incorrect";
         });
+      }
+    }).catchError((err) {
+      setState(() {
+        textResLogin = err.toString();
       });
-    }
+    });
   }
 }
 
+
+
+}
