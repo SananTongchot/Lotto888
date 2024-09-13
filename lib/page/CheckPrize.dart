@@ -1,10 +1,14 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/config/config.dart';
+import 'package:flutter_application_1/model/response/LotteryGetResponse.dart';
 import 'package:flutter_application_1/page/EditProfileUser.dart';
 import 'package:flutter_application_1/page/FindLotto.dart';
 import 'package:flutter_application_1/page/ProfileUser.dart';
 import 'package:flutter_application_1/page/Wallet.dart';
+import 'package:http/http.dart' as http;
 
 class Checkprizepage extends StatefulWidget {
   int idx = 0;
@@ -15,6 +19,20 @@ class Checkprizepage extends StatefulWidget {
 }
 
 class CheckprizeState extends State<Checkprizepage> {
+  List<LotteryGetResponse> lotteries = [];
+  String url = '';
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      Configuration.getConfig().then((config) {
+        url = config['apiEndpoint'];
+        getWin_Lotto();
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -154,85 +172,91 @@ class CheckprizeState extends State<Checkprizepage> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-            child: Container(
-              color: Colors.white,
-              child: SizedBox(
-                width: double.infinity,
-                height: 103,
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+          Expanded(
+            child: ListView(children: [
+              SizedBox(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                   child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.lightBlue[50],
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Ticket Number Container
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 20),
+                    color: Colors.white,
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 103,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Colors.blue[300],
-                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.lightBlue[50],
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          child: const Text(
-                            '567546',
-                            style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // Ticket Number Container
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 20),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue[300],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Text(
+                                  '567546',
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              // Text Column
+                              const Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'ยินดีด้วย',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    'คุณถูกรางวัลที่ 4',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              // Multiplier and Amount
+                              const Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    '4000 ฿',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                        // Text Column
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'ยินดีด้วย',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            Text(
-                              'คุณถูกรางวัลที่ 4',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                        // Multiplier and Amount
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              '4000 ฿',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
+            ]),
           ),
         ],
       ),
@@ -293,6 +317,30 @@ class CheckprizeState extends State<Checkprizepage> {
           MaterialPageRoute(
             builder: (context) => Profileuser(idx: widget.idx),
           ));
+    }
+  }
+
+  void getWin_Lotto() async {
+    try {
+      var model = {"uid": widget.idx};
+      final response = await http.post(
+        Uri.parse("$url/lotto_buy_finish"),
+        headers: {"Content-Type": "application/json; charset=utf-8"},
+        body: jsonEncode(model),
+      );
+      log("uid" + widget.idx.toString());
+      log(response.body);
+
+      if (response.statusCode == 200) {
+        setState(() {
+          lotteries = lotteryGetResponseFromJson(response.body);
+          // resetControllers(); // Reset controllers after fetching data
+        });
+      } else {
+        log('Failed to load lotto data: ${response.statusCode}');
+      }
+    } catch (e) {
+      log('Error occurred while fetching lotto data: $e');
     }
   }
 }
