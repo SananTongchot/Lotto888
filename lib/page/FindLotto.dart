@@ -363,7 +363,7 @@ class _FindLottoPageState extends State<FindLottoPage> {
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               Wallet(
-                                                                idx: idx,
+                                                                idx: widget.idx,
                                                               ))); // ปิด dialog เมื่อกด "ใช่"
                                                 },
                                                 child: const Text("ใช่"),

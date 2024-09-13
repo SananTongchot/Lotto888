@@ -368,7 +368,7 @@ class _WalletState extends State<Wallet> {
     var config = await Configuration.getConfig();
     var url = config['apiEndpoint'];
     var model = {
-      "uid": idx,
+      "uid": widget.idx,
       "lids": ['','',''],
 
     };

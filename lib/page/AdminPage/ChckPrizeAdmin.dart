@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CheckPrizeAdmin extends StatefulWidget {
-  const CheckPrizeAdmin({super.key});
+  int idx = 0;
+   CheckPrizeAdmin({super.key , required this.idx});
 
   @override
   State<CheckPrizeAdmin> createState() => _CheckPrizeAdminState();
