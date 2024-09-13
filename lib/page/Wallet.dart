@@ -24,6 +24,15 @@ class _WalletState extends State<Wallet> {
   int countPrice = 0; // ราคารวมสินค้า
   int credit = 0;
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      getUser();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -433,6 +442,21 @@ class _WalletState extends State<Wallet> {
     }).catchError((err) {
       log("Error: $err");
       setState(() {});
+    });
+  }
+
+  Future<void> getUser() async {
+    var config = await Configuration.getConfig();
+    var url = config['apiEndpoint'];
+    var model = {"uid": widget.idx};
+    var user = http
+        .post(
+      Uri.parse("$url/get1"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(model),
+    )
+        .then((value) {
+      log(value.body);
     });
   }
 }

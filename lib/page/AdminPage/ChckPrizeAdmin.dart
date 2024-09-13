@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/config/config.dart';
+import 'package:flutter_application_1/model/response/LotteryGetResponse.dart';
 import 'package:flutter_application_1/page/AdminPage/ProfileAdmin.dart';
 import 'package:flutter_application_1/page/AdminPage/Random.dart';
 import 'package:http/http.dart' as http; // ใช้สำหรับเรียกใช้งาน HTTP
@@ -16,6 +17,52 @@ class CheckPrizeAdmin extends StatefulWidget {
 }
 
 class _CheckPrizeAdminState extends State<CheckPrizeAdmin> {
+  String url = '';
+  List<LotteryGetResponse> lotteries = [];
+
+  List<TextEditingController> numControllers =
+      List.generate(6, (index) => TextEditingController());
+  List<FocusNode> focusNodes = List.generate(6, (index) => FocusNode());
+
+  int lastFilledIndex = -1;
+  @override
+  void initState() {
+    super.initState();
+    Configuration.getConfig().then((config) {
+      setState(() {
+        url = config['apiEndpoint'];
+        getLotto(); // Fetch all lotto data initially
+      });
+    });
+  }
+Future<void> getLotto() async {
+    var config = await Configuration.getConfig();
+    var url = config['apiEndpoint'];
+
+    if (url.isEmpty) {
+      log("API URL is not set.");
+      return;
+    }
+
+    try {
+      final response = await http.get(
+        Uri.parse("$url/get_lotto_for_buy"),
+        headers: {"Content-Type": "application/json; charset=utf-8"},
+      );
+      log(response.toString());
+      if (response.statusCode == 200) {
+        setState(() {
+          lotteries = lotteryGetResponseFromJson(response.body);
+          resetControllers(); // Reset controllers after fetching data
+        });
+      } else {
+        log('Failed to load lotto data: ${response.statusCode}');
+      }
+    } catch (e) {
+      log('Error occurred while fetching lotto data: $e');
+    }
+    log(lotteries.toString());
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -228,6 +275,18 @@ class _CheckPrizeAdminState extends State<CheckPrizeAdmin> {
           MaterialPageRoute(
             builder: (context) => Profileadmin(idx: widget.idx),
           ));
+    }
+  }
+
+  
+
+  void resetControllers() {
+    for (var controller in numControllers) {
+      controller.clear(); // Clear text in each controller
+    }
+    lastFilledIndex = -1; // Reset the index of last filled TextField
+    for (var node in focusNodes) {
+      node.unfocus(); // Unfocus any focus nodes
     }
   }
 }
