@@ -35,7 +35,8 @@ class _CheckPrizeAdminState extends State<CheckPrizeAdmin> {
       });
     });
   }
-Future<void> getLotto() async {
+
+  Future<void> getLotto() async {
     var config = await Configuration.getConfig();
     var url = config['apiEndpoint'];
 
@@ -49,7 +50,7 @@ Future<void> getLotto() async {
         Uri.parse("$url/get_lotto_for_buy"),
         headers: {"Content-Type": "application/json; charset=utf-8"},
       );
-      log(response.toString());
+      // log(response.toString());
       if (response.statusCode == 200) {
         setState(() {
           lotteries = lotteryGetResponseFromJson(response.body);
@@ -61,8 +62,9 @@ Future<void> getLotto() async {
     } catch (e) {
       log('Error occurred while fetching lotto data: $e');
     }
-    log(lotteries.toString());
+    // log(lotteries.toString());
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -277,8 +279,6 @@ Future<void> getLotto() async {
           ));
     }
   }
-
-  
 
   void resetControllers() {
     for (var controller in numControllers) {

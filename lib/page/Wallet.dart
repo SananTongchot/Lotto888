@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/config/config.dart';
+import 'package:flutter_application_1/model/response/UserGetCreditResponse.dart';
 import 'package:flutter_application_1/page/CheckPrize.dart';
 import 'package:flutter_application_1/page/EditProfileUser.dart';
 import 'package:flutter_application_1/page/FindLotto.dart';
@@ -22,14 +23,12 @@ class Wallet extends StatefulWidget {
 class _WalletState extends State<Wallet> {
   int count = 0; // จำนวนสินค้า
   int countPrice = 0; // ราคารวมสินค้า
-  int credit = 0;
+  int credit = 0; // ค่าเริ่มต้นของ credit
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    setState(() {
-      getUser();
-    });
+    getUser(); // เรียก getUser() ตอนเริ่มต้น
   }
 
   @override
@@ -121,10 +120,10 @@ class _WalletState extends State<Wallet> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Column(
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Balance',
                                     style: TextStyle(
                                       color: Colors.white,
@@ -133,8 +132,8 @@ class _WalletState extends State<Wallet> {
                                     ),
                                   ),
                                   Text(
-                                    '฿132132',
-                                    style: TextStyle(
+                                    '฿ $credit', // แสดงค่า credit
+                                    style: const TextStyle(
                                       fontSize: 30,
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -439,6 +438,9 @@ class _WalletState extends State<Wallet> {
       cartProvider.clearCart(); // เรียกใช้ฟังก์ชัน clearCart เพื่อล้างข้อมูล
       log("pay2");
       log(value.body);
+      setState(() {
+        getUser();
+      });
     }).catchError((err) {
       log("Error: $err");
       setState(() {});
@@ -446,17 +448,29 @@ class _WalletState extends State<Wallet> {
   }
 
   Future<void> getUser() async {
-    var config = await Configuration.getConfig();
-    var url = config['apiEndpoint'];
-    var model = {"uid": widget.idx};
-    var user = http
-        .post(
-      Uri.parse("$url/get1"),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(model),
-    )
-        .then((value) {
-      log(value.body);
-    });
+    try {
+      var config = await Configuration.getConfig();
+      var url = config['apiEndpoint'];
+      var model = {"uid": widget.idx};
+
+      var response = await http.post(
+        Uri.parse("$url/get1"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(model),
+      );
+
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body);
+        setState(() {
+          credit = jsonResponse[
+              'credit']; // อัพเดต credit และเรียก setState เพื่ออัพเดต UI
+        });
+        log(credit.toString());
+      } else {
+        log('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      log('Error occurred: $e');
+    }
   }
 }
