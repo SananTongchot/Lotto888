@@ -281,17 +281,17 @@ class CheckprizeState extends State<Checkprizepage> {
             builder: (context) => Wallet(idx: widget.idx),
           ));
     } else if (index == 2) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Checkprizepage(idx: widget.idx),
-          ));
-    } else if (index == 3) {
       // Navigator.push(
       //     context,
       //     MaterialPageRoute(
-      //       builder: (context) => Editprofileuser(idx: widget.idx),
+      //       builder: (context) => Checkprizepage(idx: widget.idx),
       //     ));
+    } else if (index == 3) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Editprofileuser(idx: widget.idx),
+          ));
     }
   }
 }
