@@ -1,7 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/page/EditProfileUser.dart';
+import 'package:flutter_application_1/page/FindLotto.dart';
+import 'package:flutter_application_1/page/Wallet.dart';
 
 class Checkprizepage extends StatefulWidget {
-  const Checkprizepage({super.key});
+  int idx = 0;
+  Checkprizepage({super.key, required this.idx});
 
   @override
   State<Checkprizepage> createState() => CheckprizeState();
@@ -100,7 +106,8 @@ class CheckprizeState extends State<Checkprizepage> {
                       const SizedBox(height: 8),
                       Expanded(
                         child: GridView.builder(
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             crossAxisSpacing: 3.0,
                             mainAxisSpacing: 16.0,
@@ -151,7 +158,7 @@ class CheckprizeState extends State<Checkprizepage> {
             child: Container(
               color: Colors.white,
               child: SizedBox(
-                 width: double.infinity,
+                width: double.infinity,
                 height: 103,
                 child: Card(
                   shape: RoundedRectangleBorder(
@@ -168,7 +175,8 @@ class CheckprizeState extends State<Checkprizepage> {
                       children: [
                         // Ticket Number Container
                         Container(
-                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
                           decoration: BoxDecoration(
                             color: Colors.blue[300],
                             borderRadius: BorderRadius.circular(10),
@@ -183,10 +191,10 @@ class CheckprizeState extends State<Checkprizepage> {
                           ),
                         ),
                         // Text Column
-                      const  Column(
+                        const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                             Text(
+                            Text(
                               'ยินดีด้วย',
                               style: TextStyle(
                                 fontSize: 18,
@@ -194,8 +202,8 @@ class CheckprizeState extends State<Checkprizepage> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                             SizedBox(height: 5),
-                             Text(
+                            SizedBox(height: 5),
+                            Text(
                               'คุณถูกรางวัลที่ 4',
                               style: TextStyle(
                                 fontSize: 16,
@@ -205,10 +213,10 @@ class CheckprizeState extends State<Checkprizepage> {
                           ],
                         ),
                         // Multiplier and Amount
-                       const Column(
+                        const Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                             Text(
+                            Text(
                               '4000 ฿',
                               style: TextStyle(
                                 fontSize: 16,
@@ -251,9 +259,39 @@ class CheckprizeState extends State<Checkprizepage> {
           ),
         ],
         onTap: (index) {
+          tapbarNavigator(index);
           // Actions when an item is selected
         },
       ),
     );
+  }
+
+  void tapbarNavigator(int index) {
+    log(index.toString());
+    if (index == 0) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => FindLottoPage(idx: widget.idx),
+          ));
+    } else if (index == 1) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Wallet(idx: widget.idx),
+          ));
+    } else if (index == 2) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Checkprizepage(idx: widget.idx),
+          ));
+    } else if (index == 3) {
+      // Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => Editprofileuser(idx: widget.idx),
+      //     ));
+    }
   }
 }
