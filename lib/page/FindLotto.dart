@@ -2,8 +2,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/config/config.dart';
 import 'package:flutter_application_1/model/response/LotteryGetResponse.dart';
+import 'package:flutter_application_1/page/CheckPrize.dart';
+import 'package:flutter_application_1/page/EditProfileUser.dart';
+import 'package:flutter_application_1/page/Wallet.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:provider/provider.dart';
 
 class FindLottoPage extends StatefulWidget {
   final int idx;
@@ -72,6 +77,7 @@ class _FindLottoPageState extends State<FindLottoPage> {
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -349,8 +355,18 @@ class _FindLottoPageState extends State<FindLottoPage> {
                                             children: [
                                               TextButton(
                                                 onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pop(); // ปิด dialog เมื่อกด "ใช่"
+                                                  cartProvider.addItem(
+                                                      lottery.lid.toString(),
+                                                      lottery.price,
+                                                      lottery.lottoNumber);
+                                                  Navigator.of(context).pop();
+                                                  // Navigator.push(
+                                                  //     context,
+                                                  //     MaterialPageRoute(
+                                                  //         builder: (context) =>
+                                                  //             Wallet(
+                                                  //               idx: widget.idx,
+                                                  //             ))); // ปิด dialog เมื่อกด "ใช่"
                                                 },
                                                 child: const Text("ใช่"),
                                                 style: TextButton.styleFrom(
@@ -371,7 +387,8 @@ class _FindLottoPageState extends State<FindLottoPage> {
                                                 style: TextButton.styleFrom(
                                                   foregroundColor: Colors.white,
                                                   backgroundColor:
-                                                      Color.fromARGB(255, 251, 61, 61),
+                                                      Color.fromARGB(
+                                                          255, 251, 61, 61),
                                                 ),
                                               ),
                                             ],
@@ -433,10 +450,35 @@ class _FindLottoPageState extends State<FindLottoPage> {
           ),
         ],
         onTap: (index) {
+          tapbarNavigator(index);
           // Actions when an item is selected
         },
       ),
     );
+  }
+
+  void tapbarNavigator(int index) {
+    log(index.toString());
+    if (index == 0) {
+    } else if (index == 1) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Wallet(idx: widget.idx),
+          ));
+    } else if (index == 2) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Checkprizepage(idx: widget.idx),
+          ));
+    } else if (index == 3) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Editprofileuser(idx: widget.idx),
+          ));
+    }
   }
 
   void getnum() {
@@ -463,5 +505,108 @@ class _FindLottoPageState extends State<FindLottoPage> {
     setState(() {
       lotteries = filteredLotteries;
     });
+  }
+}
+
+class CartItem {
+  final String id;
+  final String LottoNmuber;
+  final int quantity;
+  final int price;
+
+  CartItem({
+    required this.id,
+    required this.LottoNmuber,
+    required this.quantity,
+    required this.price,
+  });
+}
+
+class CartProvider with ChangeNotifier {
+  Map<String, CartItem> _items = {};
+
+  Map<String, CartItem> get items {
+    return {..._items};
+  }
+
+  double get totalAmount {
+    double total = 0.0;
+    _items.forEach((key, cartItem) {
+      total += cartItem.price * cartItem.quantity;
+    });
+    return total;
+  }
+
+  void addItem(String productId, int price, String LottoNmuber) {
+    // if (_items.containsKey(productId)) {
+    //   _items.update(
+    //     productId.toString(),
+    //     (existingCartItem) => CartItem(
+    //       id: existingCartItem.id,
+    //       LottoNmuber: existingCartItem.LottoNmuber,
+    //       quantity: existingCartItem.quantity + 1,
+    //       price: existingCartItem.price,
+    //     ),
+    //   );
+    // } else {
+    _items.putIfAbsent(
+      productId.toString(),
+      () => CartItem(
+        id: productId, // ใช้ productId ตรงๆ เป็น id
+        LottoNmuber: LottoNmuber,
+        quantity: 1,
+        price: price,
+      ),
+    );
+    // }
+    notifyListeners();
+  }
+
+  void removeItem(String productId) {
+    log("Attempting to remove item with ID: $productId");
+
+    // แสดงรายการสินค้าในตะกร้าทั้งหมด
+    _items.forEach((key, item) {
+      log("Item in cart - ID: ${item.id}, Quantity: ${item.quantity}");
+    });
+
+    try {
+      if (_items.containsKey(productId)) {
+        // ดึงข้อมูลของสินค้า
+        final cartItem = _items[productId]!;
+
+        if (cartItem.quantity > 1) {
+          // หากจำนวนสินค้ามากกว่า 1 ชิ้น ลดจำนวนลงทีละชิ้น
+          _items.update(
+            productId,
+            (existingCartItem) => CartItem(
+              id: existingCartItem.id,
+              LottoNmuber: existingCartItem.LottoNmuber,
+              quantity: existingCartItem.quantity - 1,
+              price: existingCartItem.price,
+            ),
+          );
+        } else {
+          // หากจำนวนสินค้าน้อยกว่าหรือเท่ากับ 1 ชิ้น ลบออกจากตะกร้า
+          _items.remove(productId);
+        }
+
+        // อัพเดต UI
+        notifyListeners();
+        log("Item updated or removed successfully");
+      } else {
+        log("Item with ID: $productId not found");
+        throw Exception('Item not found');
+      }
+    } catch (e) {
+      log('Failed to remove item: ${e.toString()}');
+      throw Exception('Failed to remove item: ${e.toString()}');
+    }
+  }
+
+  // ฟังก์ชันสำหรับล้างข้อมูลทั้งหมดในตะกร้า
+  void clearCart() {
+    _items = {}; // กำหนดตะกร้าใหม่ให้เป็นค่าว่าง
+    notifyListeners(); // แจ้งให้ UI อัพเดต
   }
 }
