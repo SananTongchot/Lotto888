@@ -24,7 +24,8 @@ class Checkprizepage extends StatefulWidget {
 class CheckprizeState extends State<Checkprizepage> {
   String url = '';
   List<UserGetCheckPrizeResponse> lotteries = [];
-  late UserGetRewardsResponse rewards;
+  UserGetRewardsResponse? rewards; // กำหนดค่าเริ่มต้นให้กับ rewards
+
   @override
   void initState() {
     // TODO: implement initState
@@ -208,31 +209,57 @@ class CheckprizeState extends State<Checkprizepage> {
                 width: 50,
               ),
               FilledButton(
-                onPressed: () {
-                  reward();
+                onPressed: () async {
+                  // แสดง Dialog กำลังโหลดก่อนที่จะเรียก reward()
+                  showDialog(
+                    context: context,
+                    barrierDismissible:
+                        false, // ป้องกันไม่ให้ปิด Dialog ก่อนที่การโหลดจะเสร็จ
+                    builder: (BuildContext context) {
+                      return const Center(
+                        child:
+                            CircularProgressIndicator(), // แสดง Loading Indicator
+                      );
+                    },
+                  );
+
+                  // รอให้ฟังก์ชัน reward() ทำงานเสร็จสิ้น
+                  await reward();
+
+                  // ปิด Dialog กำลังโหลด
+                  Navigator.pop(context);
+
+                  // เมื่อ reward() เสร็จแล้วค่อยแสดงข้อมูลใน AlertDialog ใหม่
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
                         title: Text(
-                          "${rewards.message}",
-                          textAlign:
-                              TextAlign.center, // จัดข้อความให้อยู่ตรงกลาง
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold, // ทำให้ตัวอักษรหนา
-                            fontSize: 18, // ปรับขนาดตัวอักษรหากต้องการ
+                          "ขึ้นเงินรางวัลสำเร็จ",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
                           ),
                         ),
                         content: Text(
-                          "${rewards.totalPrizeAmount}",
-                          textAlign:
-                              TextAlign.center, // จัดข้อความให้อยู่ตรงกลาง
+                          rewards != null
+                              ? "${rewards!.totalPrizeAmount} บาท" // แสดงรางวัลเมื่อ rewards ไม่เป็น null
+                              : "ไม่มีข้อมูลรางวัล", // ข้อความเมื่อ rewards ยังไม่ได้รับการกำหนดค่า
+                          textAlign: TextAlign.center,
                         ),
-                        actions: [],
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(
+                                  context); // ปิด AlertDialog เมื่อกดปุ่ม
+                            },
+                            child: const Text("ปิด"),
+                          ),
+                        ],
                       );
                     },
                   );
-                  // Action for payment
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 118, 140, 254),
@@ -432,7 +459,7 @@ class CheckprizeState extends State<Checkprizepage> {
 
       if (response.statusCode == 200) {
         setState(() {
-          rewards = userGetRewardsResponseFromJson(response.body);
+          lotteries = userGetCheckPrizeResponseFromJson(response.body);
 
           // resetControllers(); // Reset controllers after fetching data
         });
@@ -444,7 +471,7 @@ class CheckprizeState extends State<Checkprizepage> {
     }
   }
 
-  void reward() async {
+  Future<void> reward() async {
     try {
       var model = {"uid": widget.idx};
       final response = await http.post(
@@ -452,16 +479,16 @@ class CheckprizeState extends State<Checkprizepage> {
         headers: {"Content-Type": "application/json; charset=utf-8"},
         body: jsonEncode(model),
       );
+      setState(() {
+        rewards = userGetRewardsResponseFromJson(response.body);
+
+        // resetControllers(); // Reset controllers after fetching data
+      });
+      log(rewards!.previousCredit.toString());
       log("uid" + widget.idx.toString());
       log(response.body);
-      rewards = userGetRewardsResponseFromJson(response.body);
-
+      log(response.statusCode.toString());
       if (response.statusCode == 200) {
-        setState(() {
-          rewards = userGetRewardsResponseFromJson(response.body);
-
-          // resetControllers(); // Reset controllers after fetching data
-        });
       } else {
         log('Failed to load lotto data: ${response.statusCode}');
       }
