@@ -4,6 +4,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/config/config.dart';
+import 'package:flutter_application_1/model/response/Get_5_WinResponse.dart';
 import 'package:flutter_application_1/model/response/LotteryGetResponse.dart';
 import 'package:flutter_application_1/model/response/UserGetCheckPrizeResponse.dart';
 import 'package:flutter_application_1/model/response/UserGetCreditResponse.dart';
@@ -23,6 +24,9 @@ class Checkprizepage extends StatefulWidget {
 
 class CheckprizeState extends State<Checkprizepage> {
   String url = '';
+  Get5WinResponse? firstPrize;
+  List<Get5WinResponse> otherPrizes = [];
+  bool isLoading = true;
   List<UserGetCheckPrizeResponse> lotteries = [];
   UserGetRewardsResponse? rewards; // กำหนดค่าเริ่มต้นให้กับ rewards
 
@@ -34,10 +38,53 @@ class CheckprizeState extends State<Checkprizepage> {
       Configuration.getConfig().then((config) {
         url = config['apiEndpoint'];
         getWin_Lotto();
+         getPrizes();
       });
     });
   }
+ Future<void> getPrizes() async {
+    if (url.isEmpty) {
+      log("API URL is not set.");
+      setState(() {
+        isLoading = false; // Stop loading
+      });
+      return;
+    }
 
+    try {
+      final response = await http.get(
+        Uri.parse("$url/get_win_prize"),
+        headers: {"Content-Type": "application/json; charset=utf-8"},
+      );
+      log(url);
+      log('API Response Status Code: ${response.statusCode}');
+      log('API Response Body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        List<Get5WinResponse> prizes = get5WinResponseFromJson(response.body);
+        log('Parsed Prizes: $prizes');
+        setState(() {
+          // Assuming the first item is the first prize
+          if (prizes.isNotEmpty) {
+            firstPrize = prizes[0];
+            otherPrizes = prizes.sublist(1); // Get the rest as other prizes
+          }
+         
+          isLoading = false; // Stop loading
+        });
+      } else {
+        log('Failed to load prize data: ${response.statusCode}');
+        setState(() {
+          isLoading = false; // Stop loading
+        });
+      }
+    } catch (e) {
+      log('Error occurred while fetching prize data: $e');
+      setState(() {
+        isLoading = false; // Stop loading
+      });
+    }
+  }
   bool isChecked = false;
 
   @override
@@ -121,14 +168,16 @@ class CheckprizeState extends State<Checkprizepage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Text(
-                        '123456',
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                      // ตรวจสอบว่า firstPrize ไม่เป็น null และแสดงหมายเลขรางวัลที่ 1
+                      if (firstPrize != null)
+                        Text(
+                          firstPrize!.lottoNumber,
+                          style: const TextStyle(
+                            fontSize: 30,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
                       const SizedBox(height: 8),
                       Expanded(
                         child: GridView.builder(
@@ -139,8 +188,9 @@ class CheckprizeState extends State<Checkprizepage> {
                             mainAxisSpacing: 16.0,
                             childAspectRatio: 2.0,
                           ),
-                          itemCount: 4,
+                          itemCount: otherPrizes.length, // ใช้จำนวนรางวัลอื่น ๆ
                           itemBuilder: (context, index) {
+                            final otherPrize = otherPrizes[index];
                             return Card(
                               elevation: 5,
                               shape: const RoundedRectangleBorder(
@@ -159,9 +209,9 @@ class CheckprizeState extends State<Checkprizepage> {
                                       style: const TextStyle(fontSize: 16),
                                     ),
                                     const SizedBox(height: 8),
-                                    const Text(
-                                      '123456',
-                                      style: TextStyle(
+                                    Text(
+                                      otherPrize.lottoNumber, // แสดงหมายเลขรางวัลอื่น ๆ
+                                      style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                       ),
