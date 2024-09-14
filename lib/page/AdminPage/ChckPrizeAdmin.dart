@@ -6,6 +6,7 @@ import 'package:flutter_application_1/model/response/UserGetCheckPrizeResponse.d
 
 import 'package:flutter_application_1/model/response/Get_5_WinResponse.dart';
 import 'package:flutter_application_1/page/AdminPage/ProfileAdmin.dart';
+import 'package:flutter_application_1/page/AdminPage/Random.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -352,14 +353,15 @@ Future<void> drawPrizes2() async {
     void tapbarNavigator(int index) {
     log(index.toString());
     if (index == 0) {
-      // Handle Random tab action
-    } else if (index == 1) {
-      Navigator.push(
+           Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => CheckPrizeAdmin(idx: widget.idx),
+          builder: (context) => RandomPage(idx: widget.idx),
         ),
       );
+      // Handle Random tab action
+    } else if (index == 1) {
+ 
     } else if (index == 2) {
       Navigator.push(
         context,
