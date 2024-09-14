@@ -38,11 +38,12 @@ class CheckprizeState extends State<Checkprizepage> {
       Configuration.getConfig().then((config) {
         url = config['apiEndpoint'];
         getWin_Lotto();
-         getPrizes();
+        getPrizes();
       });
     });
   }
- Future<void> getPrizes() async {
+
+  Future<void> getPrizes() async {
     if (url.isEmpty) {
       log("API URL is not set.");
       setState(() {
@@ -69,7 +70,7 @@ class CheckprizeState extends State<Checkprizepage> {
             firstPrize = prizes[0];
             otherPrizes = prizes.sublist(1); // Get the rest as other prizes
           }
-         
+
           isLoading = false; // Stop loading
         });
       } else {
@@ -85,6 +86,7 @@ class CheckprizeState extends State<Checkprizepage> {
       });
     }
   }
+
   bool isChecked = false;
 
   @override
@@ -210,7 +212,8 @@ class CheckprizeState extends State<Checkprizepage> {
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
-                                      otherPrize.lottoNumber, // แสดงหมายเลขรางวัลอื่น ๆ
+                                      otherPrize
+                                          .lottoNumber, // แสดงหมายเลขรางวัลอื่น ๆ
                                       style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -285,18 +288,23 @@ class CheckprizeState extends State<Checkprizepage> {
                     builder: (BuildContext context) {
                       return AlertDialog(
                         title: Text(
+                          "",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 32,
+                          ),
+                        ),
+                        content: Text(
+                          // rewards != null
+                          //     ? "${rewards!.totalPrizeAmount} บาท" // แสดงรางวัลเมื่อ rewards ไม่เป็น null
+                          //     : "ไม่มีข้อมูลรางวัล", // ข้อความเมื่อ rewards ยังไม่ได้รับการกำหนดค่า
                           "ขึ้นเงินรางวัลสำเร็จ",
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: 28,
                           ),
-                        ),
-                        content: Text(
-                          rewards != null
-                              ? "${rewards!.totalPrizeAmount} บาท" // แสดงรางวัลเมื่อ rewards ไม่เป็น null
-                              : "ไม่มีข้อมูลรางวัล", // ข้อความเมื่อ rewards ยังไม่ได้รับการกำหนดค่า
-                          textAlign: TextAlign.center,
                         ),
                         actions: [
                           TextButton(
