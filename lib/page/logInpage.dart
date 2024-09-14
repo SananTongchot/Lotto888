@@ -193,7 +193,7 @@ Future<void> login() async {
 
   if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
     setState(() {
-      textResLogin = "Email or password must not empty";
+      textResLogin = "Email or password must not be empty";
     });
   } else {
     log(_usernameController.text + _passwordController.text);
@@ -217,12 +217,14 @@ Future<void> login() async {
 
       // ตรวจสอบว่าเป็น Admin หรือ User โดยเช็คจากค่า type
       if (type == "1") {
-        Navigator.push(
+        // ใช้ pushReplacement เพื่อป้องกันการย้อนกลับไปที่หน้า Login
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => RandomPage(idx: uid)),
         );
       } else if (type == "2") {
-        Navigator.push(
+        // ใช้ pushReplacement เพื่อป้องกันการย้อนกลับไปที่หน้า Login
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => FindLottoPage(idx: uid)),
         );
@@ -238,7 +240,5 @@ Future<void> login() async {
     });
   }
 }
-
-
 
 }
