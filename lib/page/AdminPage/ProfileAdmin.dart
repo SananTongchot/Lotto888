@@ -1,8 +1,9 @@
 import 'dart:developer';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/config/config.dart';
 import 'package:flutter_application_1/page/AdminPage/EditProfileAdmin.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_application_1/config/config.dart';
+import 'package:flutter_application_1/page/LoginPage.dart'; // นำเข้า LoginPage
 
 class Profileadmin extends StatefulWidget {
   final int idx;
@@ -20,14 +21,17 @@ class _ProfileadminState extends State<Profileadmin> {
     super.initState();
     Configuration.getConfig().then((config) {
       setState(() {
-        url = config['apiEndpoint'];
+        url = config['apiEndpoint'] ?? ''; // ตรวจสอบว่ามีค่า
       });
     });
   }
 
-  Future<void> ResetSystem() async {
+  Future<void> resetSystem() async {
     if (url.isEmpty) {
       log("API URL is not set.");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('URL ของ API ยังไม่ได้ตั้งค่า')),
+      );
       return;
     }
     try {
@@ -37,12 +41,10 @@ class _ProfileadminState extends State<Profileadmin> {
       );
 
       if (response.statusCode == 200) {
-        // แสดงข้อความแจ้งว่ารีเซ็ตสำเร็จ
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('รีเซ็ตระบบสำเร็จ')),
         );
       } else {
-        // แสดงข้อความแจ้งข้อผิดพลาด
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('เกิดข้อผิดพลาด: ${response.statusCode}')),
         );
@@ -53,6 +55,96 @@ class _ProfileadminState extends State<Profileadmin> {
         const SnackBar(content: Text('การเชื่อมต่อ API ล้มเหลว')),
       );
     }
+  }
+
+  Future<void> confirmResetSystem() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // ป้องกันการปิด Dialog ด้วยการกดพื้นที่นอก Dialog
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('ยืนยันการรีเซ็ตระบบ'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตระบบ?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('ยกเลิก'),
+              onPressed: () {
+                Navigator.of(context).pop(); // ปิด Dialog ถ้าเลือก "ยกเลิก"
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: const Color.fromARGB(255, 0, 0, 0), // Text color
+                backgroundColor: const Color.fromARGB(255, 255, 255, 255), // Background color
+              ),
+            ),
+            const SizedBox(width: 20), // เว้นระยะห่างระหว่างปุ่ม
+            TextButton(
+              child: const Text('ยืนยัน'),
+              onPressed: () {
+                Navigator.of(context).pop(); // ปิด Dialog แล้วทำการยืนยัน
+                resetSystem(); // เรียกฟังก์ชัน ResetSystem
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: const Color.fromARGB(255, 255, 255, 255), // Text color
+                backgroundColor: Color.fromARGB(255, 255, 0, 0), // Background color
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> confirmLogout() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // ป้องกันการปิด Dialog ด้วยการกดพื้นที่นอก Dialog
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('ยืนยันการออกจากระบบ'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('คุณแน่ใจหรือไม่ว่าต้องการออกจากระบบ?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('ยกเลิก'),
+              onPressed: () {
+                Navigator.of(context).pop(); // ปิด Dialog ถ้าเลือก "ยกเลิก"
+              },
+               style: TextButton.styleFrom(
+                foregroundColor: const Color.fromARGB(255, 7, 7, 7), // Text color
+                backgroundColor: Color.fromARGB(255, 255, 255, 255), // Background color
+              ),
+              
+            ),
+            const SizedBox(width: 20), // เว้นระยะห่างระหว่างปุ่ม
+            TextButton(
+              child: const Text('ยืนยัน'),
+              onPressed: () {
+                Navigator.of(context).pop(); // ปิด Dialog แล้วออกจากระบบ
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Loginpage()),
+                );
+              },
+               style: TextButton.styleFrom(
+                foregroundColor: Colors.white, // Text color
+                backgroundColor: Color.fromARGB(255, 0, 59, 252), // Background color
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -133,112 +225,74 @@ class _ProfileadminState extends State<Profileadmin> {
                           MaterialPageRoute(
                               builder: (context) => const Editprofileadmin()),
                         );
-                        // ใส่ฟังก์ชันที่ต้องการเมื่อกดปุ่ม "แก้ไขข้อมูล"
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(
                             255, 255, 255, 255), // สีพื้นหลังของปุ่ม
                         padding: const EdgeInsets.symmetric(
-                            vertical:
-                                10), // ขนาดของปุ่ม (ไม่มี horizontal padding)
+                            vertical: 10), // ขนาดของปุ่ม (ไม่มี horizontal padding)
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(5), // ขอบปุ่มโค้งมน
+                          borderRadius: BorderRadius.circular(5), // ขอบปุ่มโค้งมน
                         ),
                       ),
                       child: const Text(
-                        'แก้ไขข้อมูล',
+                        'แก้ไขข้อมูลโปรไฟล์',
                         style: TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0),
                           fontSize: 16,
+                          color: Color.fromARGB(255, 0, 0, 0), // สีของข้อความ
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 15), // เว้นระยะห่างระหว่างปุ่ม
+                  const SizedBox(height: 20), // เว้นระยะห่างระหว่างปุ่ม
                   SizedBox(
                     width: 250, // กำหนดความกว้างของปุ่ม
                     child: ElevatedButton(
                       onPressed: () {
-                        // ใส่ฟังก์ชันที่ต้องการเมื่อกดปุ่ม "เกี่ยวกับ"
+                        confirmLogout(); // เรียกการยืนยันการออกจากระบบ
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(
                             255, 255, 255, 255), // สีพื้นหลังของปุ่ม
                         padding: const EdgeInsets.symmetric(
-                            vertical:
-                                10), // ขนาดของปุ่ม (ไม่มี horizontal padding)
+                            vertical: 10), // ขนาดของปุ่ม (ไม่มี horizontal padding)
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(5), // ขอบปุ่มโค้งมน
-                        ),
-                      ),
-                      child: const Text(
-                        'เกี่ยวกับ',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0),
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 15), // เว้นระยะห่างระหว่างปุ่ม
-                  SizedBox(
-                    width: 250, // กำหนดความกว้างของปุ่ม
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).popUntil(
-                          (route) => route.isFirst,
-                        );
-                        // ใส่ฟังก์ชันที่ต้องการเมื่อกดปุ่ม "ออกจากระบบ"
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(
-                            255, 255, 255, 255), // สีพื้นหลังของปุ่ม
-                        padding: const EdgeInsets.symmetric(
-                            vertical:
-                                10), // ขนาดของปุ่ม (ไม่มี horizontal padding)
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(5), // ขอบปุ่มโค้งมน
+                          borderRadius: BorderRadius.circular(5), // ขอบปุ่มโค้งมน
                         ),
                       ),
                       child: const Text(
                         'ออกจากระบบ',
                         style: TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0),
                           fontSize: 16,
+                          color: Color.fromARGB(255, 0, 0, 0), // สีของข้อความ
                         ),
                       ),
                     ),
                   ),
-                  const Spacer(), // เพิ่ม Spacer ที่นี่เพื่อดันปุ่มสุดท้ายไปอยู่ด้านล่าง
+                  const SizedBox(height: 20), // เว้นระยะห่างระหว่างปุ่ม
                   SizedBox(
                     width: 250, // กำหนดความกว้างของปุ่ม
                     child: ElevatedButton(
                       onPressed: () {
-                        ResetSystem(); // เรียกฟังก์ชันรีเซ็ตเมื่อกดปุ่ม
+                        confirmResetSystem(); // เรียกการยืนยันการรีเซ็ตระบบ
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(
-                            255, 255, 255, 255), // สีพื้นหลังของปุ่ม
+                        backgroundColor: Color.fromARGB(255, 248, 109, 109), // สีพื้นหลังของปุ่ม
                         padding: const EdgeInsets.symmetric(
-                            vertical:
-                                10), // ขนาดของปุ่ม (ไม่มี horizontal padding)
+                            vertical: 10), // ขนาดของปุ่ม (ไม่มี horizontal padding)
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(5), // ขอบปุ่มโค้งมน
+                          borderRadius: BorderRadius.circular(5), // ขอบปุ่มโค้งมน
                         ),
                       ),
                       child: const Text(
-                        'รีเซ็ตระบบทั้งหมด',
+                        'รีเซ็ตระบบ',
                         style: TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0),
                           fontSize: 16,
+                          color: Color.fromARGB(255, 0, 0, 0), // สีของข้อความ
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

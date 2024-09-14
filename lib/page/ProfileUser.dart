@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/page/EditProfileUser.dart';
+import 'package:flutter_application_1/page/logInpage.dart';
 
 class Profileuser extends StatefulWidget {
   int idx = 0;
@@ -79,6 +80,7 @@ class _ProfileuserState extends State<Profileuser> {
                 mainAxisAlignment: MainAxisAlignment.start, // ชิดด้านบน
                 children: [
                   const SizedBox(height: 50), // เว้นระยะห่างระหว่างปุ่ม
+                  // ปุ่ม "แก้ไขข้อมูล"
                   SizedBox(
                     width: 250, // กำหนดความกว้างของปุ่ม
                     child: ElevatedButton(
@@ -90,17 +92,14 @@ class _ProfileuserState extends State<Profileuser> {
                                     idx: widget.idx,
                                   )),
                         );
-                        // ใส่ฟังก์ชันที่ต้องการเมื่อกดปุ่ม "แก้ไขข้อมูล"
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(
                             255, 255, 255, 255), // สีพื้นหลังของปุ่ม
                         padding: const EdgeInsets.symmetric(
-                            vertical:
-                                10), // ขนาดของปุ่ม (ไม่มี horizontal padding)
+                            vertical: 10), // ขนาดของปุ่ม
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(5), // ขอบปุ่มโค้งมน
+                          borderRadius: BorderRadius.circular(5), // ขอบปุ่มโค้งมน
                         ),
                       ),
                       child: const Text(
@@ -113,78 +112,71 @@ class _ProfileuserState extends State<Profileuser> {
                     ),
                   ),
                   const SizedBox(height: 15), // เว้นระยะห่างระหว่างปุ่ม
+                  // ปุ่ม "ออกจากระบบ" พร้อมยืนยัน
                   SizedBox(
                     width: 250, // กำหนดความกว้างของปุ่ม
                     child: ElevatedButton(
                       onPressed: () {
-                        // ใส่ฟังก์ชันที่ต้องการเมื่อกดปุ่ม "ประวัติการสั่งซื้อ"
-                      },
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text(
+          "ยืนยัน",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        content: const Text(
+          "คุณต้องการออกจากระบบใช่หรือไม่?",
+          textAlign: TextAlign.center,
+        ),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => Loginpage()), // ไปหน้า LoginPage
+                    (route) => false, // ลบหน้าทั้งหมดออกจาก stack
+                  );
+                },
+                child: const Text("ใช่"),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: const Color(0xFF2445EF),
+                ),
+              ),
+              const SizedBox(width: 70),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // ปิด dialog เมื่อกด "ไม่"
+                },
+                child: const Text("ไม่"),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Color.fromARGB(255, 251, 61, 61),
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    },
+  );
+},
+
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(
                             255, 255, 255, 255), // สีพื้นหลังของปุ่ม
                         padding: const EdgeInsets.symmetric(
-                            vertical:
-                                10), // ขนาดของปุ่ม (ไม่มี horizontal padding)
+                            vertical: 10), // ขนาดของปุ่ม
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(5), // ขอบปุ่มโค้งมน
-                        ),
-                      ),
-                      child: const Text(
-                        'ประวัติการสั่งซื้อ',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0),
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 15), // เว้นระยะห่างระหว่างปุ่ม
-                  SizedBox(
-                    width: 250, // กำหนดความกว้างของปุ่ม
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // ใส่ฟังก์ชันที่ต้องการเมื่อกดปุ่ม "เกี่ยวกับ"
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(
-                            255, 255, 255, 255), // สีพื้นหลังของปุ่ม
-                        padding: const EdgeInsets.symmetric(
-                            vertical:
-                                10), // ขนาดของปุ่ม (ไม่มี horizontal padding)
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(5), // ขอบปุ่มโค้งมน
-                        ),
-                      ),
-                      child: const Text(
-                        'เกี่ยวกับ',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0),
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 15), // เว้นระยะห่างระหว่างปุ่ม
-                  SizedBox(
-                    width: 250, // กำหนดความกว้างของปุ่ม
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).popUntil(
-                          (route) => route.isFirst,
-                        );
-                        // ใส่ฟังก์ชันที่ต้องการเมื่อกดปุ่ม "ออกจากระบบ"
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(
-                            255, 255, 255, 255), // สีพื้นหลังของปุ่ม
-                        padding: const EdgeInsets.symmetric(
-                            vertical:
-                                10), // ขนาดของปุ่ม (ไม่มี horizontal padding)
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(5), // ขอบปุ่มโค้งมน
+                          borderRadius: BorderRadius.circular(5), // ขอบปุ่มโค้งมน
                         ),
                       ),
                       child: const Text(
