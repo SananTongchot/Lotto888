@@ -262,91 +262,92 @@ Future<void> drawPrizes2() async {
                   ),
                 )
               : Column(
-                  children: [
-                    // Display the first prize
-                    if (firstPrize != null)
-                      Container(
-                        width: double.infinity,
-                        height: 270,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF2445EF),
-                          borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(30),
-                            bottomRight: Radius.circular(30),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                'รางวัลที่ 1',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                firstPrize!.lottoNumber,
-                                style: const TextStyle(
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                '${firstPrize!.prizeAmount} บาท',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
+        children: [
+          SizedBox(
+            width: double.infinity,
+            height: 270,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+              ),
+              child: Container(
+                color: const Color(0xFF2445EF),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      const Text(
+                        'รางวัลที่ 1',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    const SizedBox(height: 10),
-                    // Display the other prizes
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: otherPrizes.length,
-                        itemBuilder: (context, index) {
-                          final prize = otherPrizes[index];
-                          return Card(
-                            elevation: 5,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(30),
-                                bottom: Radius.circular(20),
-                              ),
-                            ),
-                            child: ListTile(
-                              title: Text(
-                                'รางวัลที่ ${index + 2}',
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                              subtitle: Text(
-                                prize.lottoNumber,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
+                      // ตรวจสอบว่า firstPrize ไม่เป็น null และแสดงหมายเลขรางวัลที่ 1
+                      if (firstPrize != null)
+                        Text(
+                          firstPrize!.lottoNumber,
+                          style: const TextStyle(
+                            fontSize: 30,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      const SizedBox(height: 8),
+                      Expanded(
+                        child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 3.0,
+                            mainAxisSpacing: 16.0,
+                            childAspectRatio: 2.0,
+                          ),
+                          itemCount: otherPrizes.length, // ใช้จำนวนรางวัลอื่น ๆ
+                          itemBuilder: (context, index) {
+                            final otherPrize = otherPrizes[index];
+                            return Card(
+                              elevation: 5,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(30),
+                                  bottom: Radius.circular(20),
                                 ),
                               ),
-                              trailing: Text(
-                                '${prize.prizeAmount} บาท',
-                                style: const TextStyle(fontSize: 16),
+                              child: Center(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'รางวัลที่ ${index + 2}',
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      otherPrize.lottoNumber, // แสดงหมายเลขรางวัลอื่น ๆ
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-    );
+              ),
+            ),
+          ),
+        ]
+        )    );
   }
     void tapbarNavigator(int index) {
     log(index.toString());
