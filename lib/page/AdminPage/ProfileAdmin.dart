@@ -26,36 +26,37 @@ class _ProfileadminState extends State<Profileadmin> {
     });
   }
 
-  Future<void> resetSystem() async {
-    if (url.isEmpty) {
-      log("API URL is not set.");
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('URL ของ API ยังไม่ได้ตั้งค่า')),
-      );
-      return;
-    }
-    try {
-      final response = await http.delete(
-        Uri.parse("$url/reset"),
-        headers: {"Content-Type": "application/json; charset=utf-8"},
-      );
-
-      if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('รีเซ็ตระบบสำเร็จ')),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('เกิดข้อผิดพลาด: ${response.statusCode}')),
-        );
-      }
-    } catch (e) {
-      log("Error during reset: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('การเชื่อมต่อ API ล้มเหลว')),
-      );
-    }
+ Future<void> resetSystem() async {
+  if (url.isEmpty) {
+    log("API URL is not set.");
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('URL ของ API ยังไม่ได้ตั้งค่า')),
+    );
+    return;
   }
+  try {
+    final response = await http.post(
+      Uri.parse("$url/reset"),
+      headers: {"Content-Type": "application/json; charset=utf-8"},
+    );
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('รีเซ็ตระบบเสร็จสิ้น')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('เกิดข้อผิดพลาด: ${response.statusCode}')),
+      );
+    }
+  } catch (e) {
+    log("Error during reset: $e");
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('การเชื่อมต่อ API ล้มเหลว')),
+    );
+  }
+}
+
 
   Future<void> confirmResetSystem() async {
     return showDialog<void>(
@@ -274,7 +275,8 @@ class _ProfileadminState extends State<Profileadmin> {
                     width: 250, // กำหนดความกว้างของปุ่ม
                     child: ElevatedButton(
                       onPressed: () {
-                        confirmResetSystem(); // เรียกการยืนยันการรีเซ็ตระบบ
+                        confirmResetSystem(); 
+                        // เรียกการยืนยันการรีเซ็ตระบบ
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(255, 248, 109, 109), // สีพื้นหลังของปุ่ม
