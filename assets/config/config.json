@@ -1,5 +1,5 @@
 {
 
-    "apiEndpoint" : "http://192.168.65.143:8080"
+    "apiEndpoint" : "https://lotto-app-api.up.railway.app"
 
 }
